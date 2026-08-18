@@ -1,0 +1,348 @@
+{
+	"key": "group_instructions_page",
+	"title": "Instructions Page Sections",
+	"display_title": "",
+	"allow_ai_access": 1,
+	"ai_description": "Flexible content sections for the Instructions page. Currently supports the Video Grid layout for embedding multi-column Vimeo or HTML5 video grids with captions.",
+	"fields": [
+		{
+			"key": "field_instructions_sections",
+			"label": "Page Sections",
+			"name": "instructions_sections",
+			"aria-label": "",
+			"type": "flexible_content",
+			"instructions": "Add, reorder, or remove sections on the Instructions page.",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"allow_in_bindings": 0,
+			"button_label": "Add Section",
+			"min": "",
+			"max": "",
+			"layouts": {
+				"layout_video_grid": {
+					"key": "layout_video_grid",
+					"name": "section_video_grid",
+					"label": "Video Grid",
+					"display": "block",
+					"sub_fields": [
+						{
+							"key": "field_vg_section_background",
+							"label": "Section Background",
+							"name": "section_background",
+							"aria-label": "",
+							"type": "select",
+							"instructions": "Background colour for this section.",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "50",
+								"class": "",
+								"id": ""
+							},
+							"allow_in_bindings": 0,
+							"choices": {
+								"bg": "Dark (--color-bg)",
+								"surface": "Surface (--color-surface)",
+								"surface_2": "Surface 2 (--color-surface-2)"
+							},
+							"default_value": "bg",
+							"return_format": "value",
+							"multiple": 0,
+							"allow_null": 0,
+							"allow_custom": 0,
+							"search_placeholder": "",
+							"ui": 0
+						},
+						{
+							"key": "field_vg_columns",
+							"label": "Columns",
+							"name": "columns",
+							"aria-label": "",
+							"type": "select",
+							"instructions": "Number of video columns. Collapses responsively on smaller screens.",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "50",
+								"class": "",
+								"id": ""
+							},
+							"allow_in_bindings": 0,
+							"choices": {
+								"2": "2 columns",
+								"3": "3 columns (default)",
+								"4": "4 columns",
+								"5": "5 columns"
+							},
+							"default_value": "3",
+							"return_format": "value",
+							"multiple": 0,
+							"allow_null": 0,
+							"allow_custom": 0,
+							"search_placeholder": "",
+							"ui": 0
+						},
+						{
+							"key": "field_vg_section_label",
+							"label": "Section Label",
+							"name": "section_label",
+							"aria-label": "",
+							"type": "text",
+							"instructions": "Small eyebrow label above the heading (e.g. \"Application Methods\").",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "",
+								"class": "",
+								"id": ""
+							},
+							"allow_in_bindings": 0,
+							"default_value": "",
+							"maxlength": "",
+							"placeholder": "",
+							"prepend": "",
+							"append": ""
+						},
+						{
+							"key": "field_vg_section_heading",
+							"label": "Section Heading",
+							"name": "section_heading",
+							"aria-label": "",
+							"type": "text",
+							"instructions": "Section h2 heading (e.g. \"Application Instructions for Firearms\").",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "",
+								"class": "",
+								"id": ""
+							},
+							"allow_in_bindings": 0,
+							"default_value": "",
+							"maxlength": "",
+							"placeholder": "",
+							"prepend": "",
+							"append": ""
+						},
+						{
+							"key": "field_vg_section_note",
+							"label": "Section Note",
+							"name": "section_note",
+							"aria-label": "",
+							"type": "text",
+							"instructions": "Optional safety note or prerequisite displayed below the heading (e.g. \"Ensure firearm is unloaded before proceeding.\").",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "",
+								"class": "",
+								"id": ""
+							},
+							"allow_in_bindings": 0,
+							"default_value": "",
+							"maxlength": "",
+							"placeholder": "",
+							"prepend": "",
+							"append": ""
+						},
+						{
+							"key": "field_vg_videos",
+							"label": "Videos",
+							"name": "videos",
+							"aria-label": "",
+							"type": "repeater",
+							"instructions": "Add each video. Order determines left-to-right display.",
+							"required": 0,
+							"conditional_logic": 0,
+							"wrapper": {
+								"width": "",
+								"class": "",
+								"id": ""
+							},
+							"allow_in_bindings": 0,
+							"collapsed": "field_vg_video_caption",
+							"min": 0,
+							"max": "",
+							"layout": "row",
+							"button_label": "Add Video",
+							"rows_per_page": 20,
+							"sub_fields": [
+								{
+									"key": "field_vg_video_type",
+									"label": "Video Type",
+									"name": "video_type",
+									"aria-label": "",
+									"type": "select",
+									"instructions": "Choose 'Embed' to paste a Vimeo/YouTube iframe; choose 'HTML5' to upload a video file directly.",
+									"required": 1,
+									"conditional_logic": 0,
+									"wrapper": {
+										"width": "50",
+										"class": "",
+										"id": ""
+									},
+									"allow_in_bindings": 0,
+									"choices": {
+										"iframe": "Embed (Vimeo / YouTube)",
+										"html5": "HTML5 Video File"
+									},
+									"default_value": "iframe",
+									"return_format": "value",
+									"multiple": 0,
+									"allow_null": 0,
+									"allow_custom": 0,
+									"search_placeholder": "",
+									"ui": 0,
+									"parent_repeater": "field_vg_videos"
+								},
+								{
+									"key": "field_vg_video_embed",
+									"label": "Embed Code",
+									"name": "video_embed",
+									"aria-label": "",
+									"type": "textarea",
+									"instructions": "Paste the full <iframe> embed code from Vimeo or YouTube. Shown only when Video Type is 'Embed'.",
+									"required": 0,
+									"conditional_logic": [
+										[
+											{
+												"field": "field_vg_video_type",
+												"operator": "==",
+												"value": "iframe"
+											}
+										]
+									],
+									"wrapper": {
+										"width": "",
+										"class": "",
+										"id": ""
+									},
+									"allow_in_bindings": 0,
+									"default_value": "",
+									"maxlength": "",
+									"placeholder": "<iframe src=\"https://player.vimeo.com/video/...\" ...></iframe>",
+									"rows": 4,
+									"new_lines": "",
+									"parent_repeater": "field_vg_videos"
+								},
+								{
+									"key": "field_vg_video_file",
+									"label": "Video File",
+									"name": "video_file",
+									"aria-label": "",
+									"type": "file",
+									"instructions": "Upload an MP4, WebM, or OGV video file. Shown only when Video Type is 'HTML5'.",
+									"required": 0,
+									"conditional_logic": [
+										[
+											{
+												"field": "field_vg_video_type",
+												"operator": "==",
+												"value": "html5"
+											}
+										]
+									],
+									"wrapper": {
+										"width": "",
+										"class": "",
+										"id": ""
+									},
+									"allow_in_bindings": 0,
+									"return_format": "array",
+									"library": "all",
+									"min_size": "",
+									"max_size": "",
+									"mime_types": "mp4,webm,ogv",
+									"parent_repeater": "field_vg_videos"
+								},
+								{
+									"key": "field_vg_video_poster",
+									"label": "Poster Image",
+									"name": "video_poster",
+									"aria-label": "",
+									"type": "image",
+									"instructions": "Optional thumbnail shown before the video plays. Shown only when Video Type is 'HTML5'.",
+									"required": 0,
+									"conditional_logic": [
+										[
+											{
+												"field": "field_vg_video_type",
+												"operator": "==",
+												"value": "html5"
+											}
+										]
+									],
+									"wrapper": {
+										"width": "",
+										"class": "",
+										"id": ""
+									},
+									"allow_in_bindings": 0,
+									"return_format": "array",
+									"library": "all",
+									"min_width": "",
+									"min_height": "",
+									"min_size": "",
+									"max_width": "",
+									"max_height": "",
+									"max_size": "",
+									"mime_types": "jpg,jpeg,png,webp",
+									"preview_size": "medium",
+									"parent_repeater": "field_vg_videos"
+								},
+								{
+									"key": "field_vg_video_caption",
+									"label": "Caption",
+									"name": "video_caption",
+									"aria-label": "",
+									"type": "text",
+									"instructions": "Label displayed below the video (e.g. \"Step 1: Apply UV Protector\").",
+									"required": 0,
+									"conditional_logic": 0,
+									"wrapper": {
+										"width": "",
+										"class": "",
+										"id": ""
+									},
+									"allow_in_bindings": 0,
+									"default_value": "",
+									"maxlength": "",
+									"placeholder": "Step 1: …",
+									"prepend": "",
+									"append": "",
+									"parent_repeater": "field_vg_videos"
+								}
+							]
+						}
+					],
+					"min": "",
+					"max": ""
+				}
+			}
+		}
+	],
+	"location": [
+		[
+			{
+				"param": "page_template",
+				"operator": "==",
+				"value": "page-instructions.php"
+			}
+		]
+	],
+	"menu_order": 0,
+	"position": "normal",
+	"style": "default",
+	"label_placement": "top",
+	"instruction_placement": "label",
+	"hide_on_screen": [],
+	"active": true,
+	"description": "Flexible content sections for the Instructions page. Supports the Video Grid layout.",
+	"show_in_rest": 0,
+	"modified": 1745531520
+}

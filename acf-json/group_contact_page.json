@@ -1,0 +1,194 @@
+{
+	"key": "group_contact_page",
+	"title": "Contact Page Settings",
+	"fields": [
+		{
+			"key": "field_contact_phone",
+			"label": "Phone Number",
+			"name": "contact_phone",
+			"aria-label": "",
+			"type": "text",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"allow_in_bindings": 0,
+			"default_value": "317-236-7701",
+			"maxlength": "",
+			"placeholder": "",
+			"prepend": "",
+			"append": ""
+		},
+		{
+			"key": "field_contact_email",
+			"label": "Email Address",
+			"name": "contact_email",
+			"aria-label": "",
+			"type": "email",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"allow_in_bindings": 0,
+			"default_value": "info@doubletapprotect.com",
+			"placeholder": "",
+			"prepend": "",
+			"append": ""
+		},
+		{
+			"key": "field_contact_response_time",
+			"label": "Response Time",
+			"name": "contact_response_time",
+			"aria-label": "",
+			"type": "text",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"allow_in_bindings": 0,
+			"default_value": "Within 1 business day",
+			"maxlength": "",
+			"placeholder": "",
+			"prepend": "",
+			"append": ""
+		},
+		{
+			"key": "field_contact_instagram_handle",
+			"label": "Instagram Handle",
+			"name": "contact_instagram_handle",
+			"aria-label": "",
+			"type": "text",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"allow_in_bindings": 0,
+			"default_value": "",
+			"maxlength": "",
+			"placeholder": "@handle",
+			"prepend": "",
+			"append": ""
+		},
+		{
+			"key": "field_contact_instagram_url",
+			"label": "Instagram URL",
+			"name": "contact_instagram_url",
+			"aria-label": "",
+			"type": "url",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"allow_in_bindings": 0,
+			"default_value": "",
+			"placeholder": "https://www.instagram.com/..."
+		},
+		{
+			"key": "field_dealer_inquiry_heading",
+			"label": "Dealer Inquiry Heading",
+			"name": "dealer_inquiry_heading",
+			"aria-label": "",
+			"type": "text",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"allow_in_bindings": 0,
+			"default_value": "Retail & Dealer Inquiries",
+			"maxlength": "",
+			"placeholder": "",
+			"prepend": "",
+			"append": ""
+		},
+		{
+			"key": "field_dealer_inquiry_text",
+			"label": "Dealer Inquiry Text",
+			"name": "dealer_inquiry_text",
+			"aria-label": "",
+			"type": "textarea",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"allow_in_bindings": 0,
+			"default_value": "",
+			"maxlength": "",
+			"placeholder": "",
+			"rows": 3,
+			"new_lines": ""
+		},
+		{
+			"key": "field_gravity_form_id",
+			"label": "Gravity Form ID",
+			"name": "gravity_form_id",
+			"aria-label": "",
+			"type": "number",
+			"instructions": "Enter the numeric ID of the Gravity Form to display on this page.",
+			"required": 0,
+			"conditional_logic": 0,
+			"wrapper": {
+				"width": "",
+				"class": "",
+				"id": ""
+			},
+			"allow_in_bindings": 0,
+			"default_value": "",
+			"placeholder": "",
+			"prepend": "",
+			"append": "",
+			"min": 1,
+			"max": "",
+			"step": ""
+		}
+	],
+	"location": [
+		[
+			{
+				"param": "page_template",
+				"operator": "==",
+				"value": "page-contact.php"
+			}
+		]
+	],
+	"menu_order": 0,
+	"position": "normal",
+	"style": "default",
+	"label_placement": "top",
+	"instruction_placement": "label",
+	"hide_on_screen": [],
+	"active": true,
+	"description": "",
+	"show_in_rest": 0,
+	"display_title": "",
+	"allow_ai_access": 1,
+	"ai_description": "",
+	"modified": 1776199495
+}
