@@ -40,115 +40,238 @@ defined( 'ABSPATH' ) || exit;
 function doubletap_migrate_layout_map(): array {
 	return [
 		// group_homepage_sections.json -> page_sections
-		'section_hero'             => 'hero',
-		'section_category_tiles'   => 'category_tiles',
-		'section_brand_story'      => 'text_image',
+		'section_hero'              => 'hero',
+		'section_category_tiles'    => 'category_tiles',
 		'section_featured_products' => 'featured_products',
-		'section_features'        => 'features_grid',
-		'section_testimonials'    => 'testimonials',
-		'section_cta_banner'      => 'cta_banner',
+		'section_brand_story'       => 'text_image',
+		'section_features'          => 'features_grid',
+		'section_testimonials'      => 'testimonials',
+		'section_cta_banner'        => 'cta_banner',
 
 		// group_information_page_2.json -> info_sections
-		'info_page_header'        => 'page_header',
-		'info_brand_story'        => 'text_image',
-		'info_methods'            => 'application_methods',
-		'info_product_line'       => 'product_line',
-		'info_what_it_protects'   => 'features_grid',
-		'info_safety'             => 'safety_information',
+		// NOTE: the actual layout names on the live site have NO `info_`
+		// prefix at all -- verified against a WXR export of the live site
+		// (August 2026). The previously assumed `info_*` names did not
+		// exist, so the whole Information-page migration silently skipped
+		// every row.
+		'page_header'      => 'page_header',
+		'brand_story'      => 'text_image',
+		'methods'          => 'application_methods',
+		'product_line'     => 'product_line',
+		'what_it_protects' => 'features_grid',
+		'safety'           => 'safety_information',
 
 		// group_instructions_page.json -> instructions_sections
-		'section_video_grid'      => 'video_grid',
+		'section_video_grid' => 'video_grid',
 	];
 }
 
 /**
  * Field-name correspondence per legacy layout -> new universal layout.
- * Each entry maps old sub-field name => new sub-field name. Fields not
+ * Each entry maps old sub-field name => new sub-field name (a plain
+ * string), or => ['to' => new_key, 'repeater' => [old_sub => new_sub, ...]]
+ * for repeater fields whose sub-field names also need renaming. Fields not
  * listed are dropped (no destination) or handled by custom logic below.
+ *
+ * NOTE: corrected against a live-site WXR export (August 2026) -- the
+ * originally assumed bare field names (`heading`, `body`, `items`, etc.)
+ * did not match the live ACF field names, which are prefixed per-layout
+ * (e.g. `hero_heading`, `brand_story_text`, `features_section_heading`).
  */
 function doubletap_migrate_field_map(): array {
 	return [
 		'section_hero' => [
-			'heading'      => 'heading',
-			'subheading'   => 'subheading',
-			'background_image' => 'background_image',
-			'cta_text'     => 'cta_primary_text',
-			'cta_url'      => 'cta_primary_url',
+			'hero_heading'            => 'heading',
+			'hero_heading_accent'     => 'heading_accent',
+			'hero_subheading'         => 'subheading',
+			'hero_background_image'  => 'background_image',
+			'hero_cta_primary_text'   => 'cta_primary_text',
+			'hero_cta_primary_url'    => 'cta_primary_url',
+			'hero_cta_secondary_text' => 'cta_secondary_text',
+			'hero_cta_secondary_url'  => 'cta_secondary_url',
 		],
 		'section_category_tiles' => [
-			'heading'    => 'heading',
-			'subheading' => 'subheading',
-			'tiles'      => 'tiles', // repeater sub-fields assumed to already match tile_image/tile_title/tile_description/tile_link
-		],
-		'section_brand_story' => [
-			'heading' => 'heading',
-			'body'    => 'body',
-			'image'   => 'image',
+			'category_tiles_heading'    => 'heading',
+			'category_tiles_subheading' => 'subheading',
+			'category_tiles'            => 'tiles', // repeater sub-fields already match: tile_image/tile_title/tile_description/tile_link
 		],
 		'section_featured_products' => [
-			'label'       => 'label',
-			'heading'     => 'heading',
-			'description' => 'description',
-			'product_ids' => 'product_ids',
+			'featured_products_label'       => 'label',
+			'featured_products_heading'     => 'heading',
+			'featured_products_description' => 'description',
+			'featured_product_ids'          => 'product_ids',
+		],
+		'section_brand_story' => [
+			'brand_story_label'    => 'label',
+			'brand_story_heading'  => 'heading',
+			'brand_story_text'     => 'body',
+			'brand_story_image'    => 'image',
+			'brand_story_cta_text' => 'cta_text',
+			'brand_story_cta_url'  => 'cta_url',
 		],
 		'section_features' => [
-			'label'       => 'label',
-			'heading'     => 'heading',
-			'description' => 'description',
-			'items'       => 'items',
+			'features_section_label'   => 'label',
+			'features_section_heading' => 'heading',
+			'features' => [
+				'to'       => 'items',
+				'repeater' => [
+					'feature_icon'        => 'icon',
+					'feature_title'       => 'title',
+					'feature_description' => 'description',
+				],
+			],
 		],
 		'section_testimonials' => [
-			'label'        => 'label',
-			'heading'      => 'heading',
-			'testimonials' => 'testimonials',
+			'testimonials_label'   => 'label',
+			'testimonials_heading' => 'heading',
+			'testimonials' => [
+				'to'       => 'testimonials',
+				'repeater' => [
+					'testimonial_rating' => 'rating',
+					'testimonial_text'   => 'text',
+					'testimonial_author' => 'author',
+					'testimonial_role'   => 'role',
+				],
+			],
 		],
 		'section_cta_banner' => [
-			'heading'     => 'heading',
-			'text'        => 'text',
-			'button_text' => 'button_text',
-			'button_url'  => 'button_url',
+			'cta_heading'      => 'heading',
+			'cta_text'         => 'text',
+			'cta_button_text'  => 'button_text',
+			'cta_button_url'   => 'button_url',
+			'cta_button2_text' => 'button2_text',
+			'cta_button2_url'  => 'button2_url',
 		],
-		'info_page_header' => [
-			'title'    => 'title',
-			'subtitle' => 'subtitle',
+		'page_header' => [
+			'page_title'    => 'title',
+			'page_subtitle' => 'subtitle',
 		],
-		'info_brand_story' => [
-			'heading' => 'heading',
-			'body'    => 'body',
-			'image'   => 'image',
+		'brand_story' => [
+			'heading'            => 'heading',
+			'body'               => 'body',
+			'image'              => 'image',
+			'section_background' => 'section_background',
 		],
-		'info_methods' => [
-			'label'   => 'label',
-			'heading' => 'heading',
-			'methods' => 'methods',
+		'methods' => [
+			'section_label'      => 'label',
+			'section_heading'    => 'heading',
+			'section_background' => 'section_background',
+			'methods' => [
+				'to'       => 'methods',
+				'repeater' => [
+					'method_icon_svg' => 'icon',
+					'method_title'    => 'title',
+					'method_text'     => 'text',
+				],
+			],
 		],
-		'info_product_line' => [
-			'heading'  => 'heading',
-			'products' => 'products',
+		'product_line' => [
+			'section_heading'    => 'heading',
+			'section_background' => 'section_background',
+			'products' => [
+				'to'       => 'products',
+				'repeater' => [
+					'product_name'         => 'name',
+					'product_description'  => 'description',
+					'product_instructions' => 'instructions',
+				],
+			],
 		],
-		'info_what_it_protects' => [
-			'label'       => 'label',
-			'heading'     => 'heading',
-			'description' => 'description',
-			'items'       => 'items',
+		'what_it_protects' => [
+			'section_label'      => 'label',
+			'section_heading'    => 'heading',
+			'section_desc'       => 'description',
+			'section_background' => 'section_background',
+			'items' => [
+				'to'       => 'items',
+				'repeater' => [
+					'item_icon_svg'    => 'icon',
+					'item_title'       => 'title',
+					'item_description' => 'description',
+				],
+			],
 		],
-		'info_safety' => [
-			'label'     => 'label',
-			'heading'   => 'heading',
+		'safety' => [
+			'section_label'      => 'label',
+			'section_heading'    => 'heading',
+			'section_background' => 'section_background',
 			'body'      => 'body',
-			'sds_files' => 'sds_files',
 			'cta_label' => 'cta_label',
 			'cta_url'   => 'cta_url',
+			// `sds_files` intentionally not mapped: its legacy ACF field type
+			// could not be confirmed (empty on every live page checked), and
+			// the new `sds_files` repeater on `safety_information` has a
+			// different shape -- revisit once real data exists.
 		],
 		'section_video_grid' => [
 			'section_background' => 'section_background',
-			'label'               => 'label',
-			'heading'             => 'heading',
-			'note'                => 'note',
-			'columns'             => 'columns',
-			'videos'              => 'videos',
+			'section_label'      => 'label',
+			'section_heading'    => 'heading',
+			'section_note'       => 'note',
+			'columns'            => 'columns',
+			'videos'             => 'videos', // repeater sub-fields already match: video_type/video_embed/video_file/video_poster/video_caption
 		],
 	];
+}
+
+/**
+ * Detect a row's true legacy layout from the sub-fields it actually
+ * contains, rather than trusting its `acf_fc_layout` value.
+ *
+ * This is necessary because a live-site WXR export (verified August 2026)
+ * showed `page_sections` rows 2 and 3 on the Home page with their
+ * `acf_fc_layout` value swapped relative to their actual field data (row 2
+ * labelled `section_brand_story` but containing `featured_products_*`
+ * fields, and vice versa), and `instructions_sections` row 1 missing its
+ * `acf_fc_layout` meta entirely. Detecting by field signature is robust to
+ * both problems.
+ *
+ * @return string|null Legacy layout name, or null if no signature matched.
+ */
+function doubletap_migrate_detect_layout( array $row ): ?string {
+	if ( array_key_exists( 'hero_heading', $row ) || array_key_exists( 'hero_background_image', $row ) ) {
+		return 'section_hero';
+	}
+	if ( array_key_exists( 'category_tiles_heading', $row ) ) {
+		return 'section_category_tiles';
+	}
+	if ( array_key_exists( 'featured_products_label', $row ) || array_key_exists( 'featured_product_ids', $row ) ) {
+		return 'section_featured_products';
+	}
+	if ( array_key_exists( 'brand_story_label', $row ) || array_key_exists( 'brand_story_heading', $row ) ) {
+		return 'section_brand_story';
+	}
+	if ( array_key_exists( 'features_section_heading', $row ) || array_key_exists( 'features_section_label', $row ) ) {
+		return 'section_features';
+	}
+	if ( array_key_exists( 'testimonials_heading', $row ) && array_key_exists( 'testimonials_label', $row ) ) {
+		return 'section_testimonials';
+	}
+	if ( array_key_exists( 'cta_heading', $row ) || array_key_exists( 'cta_text', $row ) ) {
+		return 'section_cta_banner';
+	}
+	if ( array_key_exists( 'page_title', $row ) ) {
+		return 'page_header';
+	}
+	if ( array_key_exists( 'products', $row ) ) {
+		return 'product_line';
+	}
+	if ( array_key_exists( 'methods', $row ) ) {
+		return 'methods';
+	}
+	if ( array_key_exists( 'items', $row ) && array_key_exists( 'section_desc', $row ) ) {
+		return 'what_it_protects';
+	}
+	if ( array_key_exists( 'cta_url', $row ) || array_key_exists( 'sds_files', $row ) ) {
+		return 'safety';
+	}
+	if ( array_key_exists( 'heading', $row ) && array_key_exists( 'image', $row ) ) {
+		return 'brand_story';
+	}
+	if ( array_key_exists( 'videos', $row ) || array_key_exists( 'section_heading', $row ) ) {
+		return 'section_video_grid';
+	}
+	return null;
 }
 
 /**
@@ -163,9 +286,29 @@ function doubletap_migrate_map_row( string $legacy_layout, string $new_layout, a
 		return $mapped;
 	}
 
-	foreach ( $field_map[ $legacy_layout ] as $old_key => $new_key ) {
-		if ( array_key_exists( $old_key, $row ) ) {
-			$mapped[ $new_key ] = $row[ $old_key ];
+	foreach ( $field_map[ $legacy_layout ] as $old_key => $spec ) {
+		if ( ! array_key_exists( $old_key, $row ) ) {
+			continue;
+		}
+
+		if ( is_array( $spec ) ) {
+			// Repeater field: rename each sub-field within every row too.
+			$new_key       = $spec['to'];
+			$sub_field_map = $spec['repeater'];
+			$old_rows      = is_array( $row[ $old_key ] ) ? $row[ $old_key ] : [];
+			$new_sub_rows  = [];
+			foreach ( $old_rows as $sub_row ) {
+				$mapped_sub = [];
+				foreach ( $sub_field_map as $old_sub => $new_sub ) {
+					if ( is_array( $sub_row ) && array_key_exists( $old_sub, $sub_row ) ) {
+						$mapped_sub[ $new_sub ] = $sub_row[ $old_sub ];
+					}
+				}
+				$new_sub_rows[] = $mapped_sub;
+			}
+			$mapped[ $new_key ] = $new_sub_rows;
+		} else {
+			$mapped[ $spec ] = $row[ $old_key ];
 		}
 	}
 
@@ -192,9 +335,18 @@ function doubletap_migrate_flexible_field( int $post_id, string $legacy_field, b
 	$migrated   = 0;
 
 	foreach ( $raw_rows as $row ) {
-		$legacy_layout = $row['acf_fc_layout'] ?? '';
+		// Detect the row's true layout from its actual field data first
+		// (robust to mislabeled/missing acf_fc_layout -- see
+		// doubletap_migrate_detect_layout() docblock), falling back to the
+		// row's own acf_fc_layout value only if no signature matched.
+		$legacy_layout = doubletap_migrate_detect_layout( $row );
+		if ( empty( $legacy_layout ) ) {
+			$legacy_layout = $row['acf_fc_layout'] ?? '';
+		}
 		if ( empty( $legacy_layout ) || empty( $layout_map[ $legacy_layout ] ) ) {
-			WP_CLI::warning( "  Skipping unmapped layout '{$legacy_layout}' on post {$post_id}." );
+			if ( defined( 'WP_CLI' ) && WP_CLI ) {
+				WP_CLI::warning( "  Skipping unmapped layout '{$legacy_layout}' on post {$post_id}." );
+			}
 			continue;
 		}
 		$new_layout = $layout_map[ $legacy_layout ];
