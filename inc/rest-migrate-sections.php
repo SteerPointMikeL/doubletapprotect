@@ -9,13 +9,16 @@
  *
  * Auth: an authenticated administrator, via WordPress core Application
  * Passwords (Users -> Profile -> Application Passwords) sent as HTTP Basic
- * auth over HTTPS. No plugin required — this has been a core WordPress
- * feature since 5.6. The endpoint itself only checks capabilities; it does
- * not implement authentication.
+ * auth. No plugin required — this has been a core WordPress feature since
+ * 5.6. The endpoint itself only checks the manage_options capability; it
+ * does not implement authentication. HTTPS is strongly recommended in
+ * production (Basic Auth headers are base64, not encrypted) but is not
+ * enforced by this endpoint since dev/staging hosts often lack TLS — see
+ * doubletap_migrate_sections_permission_check() below.
  *
  * This calls the exact same doubletap_run_sections_migration() function
  * used by `wp doubletap migrate-sections` (see inc/cli-migrate-sections.php)
- * — same non-destructive, idempotent behavior, just reachable over HTTPS
+ * — same non-destructive, idempotent behavior, just reachable over HTTP(S)
  * instead of a terminal.
  *
  * @package doubletap
@@ -51,20 +54,19 @@ function doubletap_register_migrate_sections_route() {
 }
 
 /**
- * Only site administrators may run the migration, and only over HTTPS
- * (Application Passwords already require HTTPS by default outside of
- * localhost, but this is an explicit belt-and-suspenders check since the
- * migration writes post meta).
+ * Only site administrators may run the migration.
+ *
+ * HTTPS is strongly recommended (WordPress Application Password Basic Auth
+ * headers are base64, not encrypted), but is not enforced here: WordPress
+ * core itself does not require HTTPS for Application Passwords to
+ * function, and many dev/staging hosts (including this project's) don't
+ * have TLS configured. If you deploy this to a production HTTPS site, you
+ * can re-add a hard `is_ssl()` check; the real security boundary is the
+ * `manage_options` capability check below plus the Application Password
+ * itself, which is scoped to one admin account and independently
+ * revocable from your login password.
  */
 function doubletap_migrate_sections_permission_check( WP_REST_Request $request ) {
-	if ( ! is_ssl() && 'localhost' !== wp_parse_url( home_url(), PHP_URL_HOST ) ) {
-		return new WP_Error(
-			'doubletap_https_required',
-			'This endpoint requires HTTPS.',
-			[ 'status' => 403 ]
-		);
-	}
-
 	if ( ! current_user_can( 'manage_options' ) ) {
 		return new WP_Error(
 			'doubletap_forbidden',

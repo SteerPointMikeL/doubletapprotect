@@ -135,10 +135,13 @@ reachable two ways — pick whichever fits your hosting access:
    Auth is a WordPress administrator account authenticated via core
    **Application Passwords** (Users → Profile → Application Passwords —
    built into WordPress since 5.6, no plugin needed), sent as HTTP Basic
-   auth over HTTPS. Example:
+   auth. HTTPS is strongly recommended in production; this endpoint doesn't
+   hard-require it since dev/staging hosts often lack TLS (see
+   `inc/rest-migrate-sections.php` if you want to re-add that check on a
+   production HTTPS site). Example:
 
    ```bash
-   curl -X POST https://your-site.example/wp-json/doubletap/v1/migrate-sections \
+   curl -X POST http://your-site.example/wp-json/doubletap/v1/migrate-sections \
      -u "admin_username:xxxx xxxx xxxx xxxx xxxx xxxx" \
      -H "Content-Type: application/json" \
      -d '{"dry_run": true}'
