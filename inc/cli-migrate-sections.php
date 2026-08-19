@@ -1,6 +1,6 @@
 <?php
 /**
- * WP-CLI: Migrate legacy flexible-content fields into the new universal
+ * Migrate legacy flexible-content fields into the new universal
  * `content_sections` field (group_universal_content_sections).
  *
  * This is a non-destructive, idempotent, additive migration:
@@ -10,23 +10,27 @@
  *     and as the automatic fallback rendered by the templates whenever
  *     content_sections has no rows yet.
  *   - It skips any page that already has content_sections rows, so running
- *     the command multiple times (or against a partially-migrated site) is
- *     safe and will not create duplicate sections.
+ *     the migration multiple times (or against a partially-migrated site)
+ *     is safe and will not create duplicate sections.
  *
- * Usage (on the dev/staging site, via WP-CLI):
+ * The core migration logic below (`doubletap_run_sections_migration()`) is
+ * shared by two entry points:
  *
- *   wp doubletap migrate-sections            # migrate every eligible page
- *   wp doubletap migrate-sections --dry-run   # preview without writing
- *   wp doubletap migrate-sections --post_id=123  # migrate a single page
+ *   1. WP-CLI (this file, when WP_CLI is active):
+ *        wp doubletap migrate-sections            # migrate every eligible page
+ *        wp doubletap migrate-sections --dry-run   # preview without writing
+ *        wp doubletap migrate-sections --post_id=123  # migrate a single page
+ *
+ *   2. A REST endpoint for environments without CLI/SSH access, registered
+ *      in inc/rest-migrate-sections.php:
+ *        POST /wp-json/doubletap/v1/migrate-sections
+ *      Requires an authenticated administrator (WordPress core Application
+ *      Passwords over HTTPS). See that file and the README for details.
  *
  * @package doubletap
  */
 
 defined( 'ABSPATH' ) || exit;
-
-if ( ! defined( 'WP_CLI' ) || ! WP_CLI ) {
-	return;
-}
 
 /**
  * Layout-name correspondence between legacy fields and the new universal
@@ -334,95 +338,173 @@ function doubletap_migrate_landing_page( int $post_id, bool $dry_run ): int {
 }
 
 /**
- * WP-CLI command class.
+ * Shared migration core, used by both the WP-CLI command and the REST
+ * endpoint in inc/rest-migrate-sections.php. Migrates legacy
+ * flexible-content fields (page_sections, info_sections,
+ * instructions_sections) and template-landing.php's fixed fields into the
+ * new universal `content_sections` field. Non-destructive: legacy data is
+ * left untouched. Idempotent: pages that already have content_sections
+ * rows are skipped.
+ *
+ * @param int  $single_post_id Only migrate this page ID. 0 = every eligible page.
+ * @param bool $dry_run        Preview without writing any changes.
+ * @return array{
+ *   ok: bool,
+ *   error: string,
+ *   dry_run: bool,
+ *   total_pages: int,
+ *   total_sections: int,
+ *   migrated: array<int, array{post_id:int, title:string, sections:int}>,
+ *   skipped: array<int, array{post_id:int, title:string, reason:string}>,
+ * }
  */
-class Doubletap_Migrate_Sections_Command {
+function doubletap_run_sections_migration( int $single_post_id = 0, bool $dry_run = false ): array {
+	$result = [
+		'ok'             => false,
+		'error'          => '',
+		'dry_run'        => $dry_run,
+		'total_pages'    => 0,
+		'total_sections' => 0,
+		'migrated'       => [],
+		'skipped'        => [],
+	];
 
-	/**
-	 * Migrate legacy flexible-content fields (page_sections, info_sections,
-	 * instructions_sections) and template-landing.php's fixed fields into
-	 * the new universal `content_sections` field. Non-destructive: legacy
-	 * data is left untouched. Idempotent: pages that already have
-	 * content_sections rows are skipped.
-	 *
-	 * ## OPTIONS
-	 *
-	 * [--post_id=<id>]
-	 * : Only migrate a single page by ID.
-	 *
-	 * [--dry-run]
-	 * : Preview what would be migrated without writing any changes.
-	 *
-	 * ## EXAMPLES
-	 *
-	 *     wp doubletap migrate-sections
-	 *     wp doubletap migrate-sections --dry-run
-	 *     wp doubletap migrate-sections --post_id=42
-	 *
-	 * @when after_wp_load
-	 */
-	public function migrate_sections( $args, $assoc_args ) {
-		$dry_run = isset( $assoc_args['dry-run'] );
-		$single  = isset( $assoc_args['post_id'] ) ? (int) $assoc_args['post_id'] : 0;
-
-		if ( ! function_exists( 'get_field' ) || ! function_exists( 'update_field' ) ) {
-			WP_CLI::error( 'Advanced Custom Fields (Pro) must be active to run this migration.' );
-			return;
-		}
-
-		$query_args = [
-			'post_type'      => 'page',
-			'post_status'    => 'any',
-			'posts_per_page' => -1,
-			'fields'         => 'ids',
-		];
-		if ( $single ) {
-			$query_args['p'] = $single;
-		}
-
-		$post_ids = get_posts( $query_args );
-		if ( empty( $post_ids ) ) {
-			WP_CLI::warning( 'No pages found to migrate.' );
-			return;
-		}
-
-		$total_pages    = 0;
-		$total_sections = 0;
-
-		foreach ( $post_ids as $post_id ) {
-			// Idempotency guard: skip pages that already have content_sections rows.
-			$existing = get_field( 'content_sections', $post_id );
-			if ( ! empty( $existing ) ) {
-				WP_CLI::log( "Skipping post {$post_id} (\"" . get_the_title( $post_id ) . '") - content_sections already populated.' );
-				continue;
-			}
-
-			$template     = get_page_template_slug( $post_id );
-			$migrated_now = 0;
-
-			if ( $template === 'template-landing.php' ) {
-				$migrated_now = doubletap_migrate_landing_page( $post_id, $dry_run );
-			} elseif ( $template === 'page-information.php' ) {
-				$migrated_now = doubletap_migrate_flexible_field( $post_id, 'info_sections', $dry_run );
-			} elseif ( $template === 'page-instructions.php' ) {
-				$migrated_now = doubletap_migrate_flexible_field( $post_id, 'instructions_sections', $dry_run );
-			} elseif ( (int) get_option( 'page_on_front' ) === $post_id || $template === 'default' || empty( $template ) ) {
-				$migrated_now = doubletap_migrate_flexible_field( $post_id, 'page_sections', $dry_run );
-			} else {
-				continue; // Nothing to migrate for this page.
-			}
-
-			if ( $migrated_now > 0 ) {
-				$total_pages++;
-				$total_sections += $migrated_now;
-				$verb = $dry_run ? 'Would migrate' : 'Migrated';
-				WP_CLI::success( "{$verb} {$migrated_now} section(s) for post {$post_id} (\"" . get_the_title( $post_id ) . '").' );
-			}
-		}
-
-		$summary_verb = $dry_run ? 'Dry run complete.' : 'Migration complete.';
-		WP_CLI::log( "{$summary_verb} {$total_pages} page(s), {$total_sections} section(s) total." );
+	if ( ! function_exists( 'get_field' ) || ! function_exists( 'update_field' ) ) {
+		$result['error'] = 'Advanced Custom Fields (Pro) must be active to run this migration.';
+		return $result;
 	}
+
+	$query_args = [
+		'post_type'      => 'page',
+		'post_status'    => 'any',
+		'posts_per_page' => -1,
+		'fields'         => 'ids',
+	];
+	if ( $single_post_id ) {
+		$query_args['p'] = $single_post_id;
+	}
+
+	$post_ids = get_posts( $query_args );
+	if ( empty( $post_ids ) ) {
+		$result['ok']    = true;
+		$result['error'] = 'No pages found to migrate.';
+		return $result;
+	}
+
+	foreach ( $post_ids as $post_id ) {
+		$title = get_the_title( $post_id );
+
+		// Idempotency guard: skip pages that already have content_sections rows.
+		$existing = get_field( 'content_sections', $post_id );
+		if ( ! empty( $existing ) ) {
+			$result['skipped'][] = [
+				'post_id' => $post_id,
+				'title'   => $title,
+				'reason'  => 'content_sections already populated',
+			];
+			continue;
+		}
+
+		$template     = get_page_template_slug( $post_id );
+		$migrated_now = 0;
+
+		if ( $template === 'template-landing.php' ) {
+			$migrated_now = doubletap_migrate_landing_page( $post_id, $dry_run );
+		} elseif ( $template === 'page-information.php' ) {
+			$migrated_now = doubletap_migrate_flexible_field( $post_id, 'info_sections', $dry_run );
+		} elseif ( $template === 'page-instructions.php' ) {
+			$migrated_now = doubletap_migrate_flexible_field( $post_id, 'instructions_sections', $dry_run );
+		} elseif ( (int) get_option( 'page_on_front' ) === $post_id || $template === 'default' || empty( $template ) ) {
+			$migrated_now = doubletap_migrate_flexible_field( $post_id, 'page_sections', $dry_run );
+		} else {
+			$result['skipped'][] = [
+				'post_id' => $post_id,
+				'title'   => $title,
+				'reason'  => 'no legacy sections field for this template',
+			];
+			continue;
+		}
+
+		if ( $migrated_now > 0 ) {
+			$result['total_pages']++;
+			$result['total_sections'] += $migrated_now;
+			$result['migrated'][] = [
+				'post_id'  => $post_id,
+				'title'    => $title,
+				'sections' => $migrated_now,
+			];
+		} else {
+			$result['skipped'][] = [
+				'post_id' => $post_id,
+				'title'   => $title,
+				'reason'  => 'no legacy content found to migrate',
+			];
+		}
+	}
+
+	$result['ok'] = true;
+	return $result;
 }
 
-WP_CLI::add_command( 'doubletap', 'Doubletap_Migrate_Sections_Command' );
+if ( defined( 'WP_CLI' ) && WP_CLI ) {
+
+	/**
+	 * WP-CLI command class. Thin wrapper around doubletap_run_sections_migration().
+	 */
+	class Doubletap_Migrate_Sections_Command {
+
+		/**
+		 * Migrate legacy flexible-content fields (page_sections, info_sections,
+		 * instructions_sections) and template-landing.php's fixed fields into
+		 * the new universal `content_sections` field. Non-destructive: legacy
+		 * data is left untouched. Idempotent: pages that already have
+		 * content_sections rows are skipped.
+		 *
+		 * ## OPTIONS
+		 *
+		 * [--post_id=<id>]
+		 * : Only migrate a single page by ID.
+		 *
+		 * [--dry-run]
+		 * : Preview what would be migrated without writing any changes.
+		 *
+		 * ## EXAMPLES
+		 *
+		 *     wp doubletap migrate-sections
+		 *     wp doubletap migrate-sections --dry-run
+		 *     wp doubletap migrate-sections --post_id=42
+		 *
+		 * @when after_wp_load
+		 */
+		public function migrate_sections( $args, $assoc_args ) {
+			$dry_run = isset( $assoc_args['dry-run'] );
+			$single  = isset( $assoc_args['post_id'] ) ? (int) $assoc_args['post_id'] : 0;
+
+			$result = doubletap_run_sections_migration( $single, $dry_run );
+
+			if ( ! $result['ok'] ) {
+				WP_CLI::error( $result['error'] );
+				return;
+			}
+
+			if ( $result['error'] ) {
+				WP_CLI::warning( $result['error'] );
+				return;
+			}
+
+			foreach ( $result['skipped'] as $skip ) {
+				WP_CLI::log( "Skipping post {$skip['post_id']} (\"{$skip['title']}\") - {$skip['reason']}." );
+			}
+
+			$verb = $dry_run ? 'Would migrate' : 'Migrated';
+			foreach ( $result['migrated'] as $page ) {
+				WP_CLI::success( "{$verb} {$page['sections']} section(s) for post {$page['post_id']} (\"{$page['title']}\")." );
+			}
+
+			$summary_verb = $dry_run ? 'Dry run complete.' : 'Migration complete.';
+			WP_CLI::log( "{$summary_verb} {$result['total_pages']} page(s), {$result['total_sections']} section(s) total." );
+		}
+	}
+
+	WP_CLI::add_command( 'doubletap', 'Doubletap_Migrate_Sections_Command' );
+}

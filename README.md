@@ -98,27 +98,57 @@ Under Pressure" text + image block on the Firearms page — is now just one
 Field/sub-field names for each layout are documented as PHP docblocks at
 the top of their corresponding template part in
 `template-parts/sections/{layout_name}.php`, and are generated from
-`build_acf_group.py` (kept in the repo as the source of truth for the
-field group — re-run it and re-export from ACF if you need to add a new
-layout or field).
+`dev/build_acf_group.py` (kept in the repo as the maintained source of
+truth for the field group — edit the layout definitions there and re-run
+`python3 dev/build_acf_group.py` from the theme root if you need to add a
+new layout or field; ACF Pro will offer to sync the regenerated JSON on the
+next admin page load).
 
 **Non-destructive rollout:** legacy fields (`page_sections`,
 `info_sections`, `instructions_sections`, and the fixed fields on
 `template-landing.php`) are untouched and still work. Every template
 checks `content_sections` first; if it has no rows, the page automatically
 falls back to whatever legacy content already exists, so no existing page
-breaks during rollout. A WP-CLI command is included to copy legacy content
-into the new field:
+breaks during rollout.
 
-```bash
-wp doubletap migrate-sections            # migrate every eligible page
-wp doubletap migrate-sections --dry-run  # preview without writing
-wp doubletap migrate-sections --post_id=42  # migrate a single page
-```
+**Migrating legacy content into `content_sections`:** the same
+non-destructive, idempotent migration logic
+(`doubletap_run_sections_migration()` in `inc/cli-migrate-sections.php`) is
+reachable two ways — pick whichever fits your hosting access:
 
-The migration is idempotent (it skips any page that already has
-`content_sections` rows) and additive (it never deletes the legacy field
-data), so it can be re-run safely at any time. See
+1. **WP-CLI** (needs SSH/terminal access to the server):
+
+   ```bash
+   wp doubletap migrate-sections            # migrate every eligible page
+   wp doubletap migrate-sections --dry-run  # preview without writing
+   wp doubletap migrate-sections --post_id=42  # migrate a single page
+   ```
+
+2. **REST endpoint** (no SSH needed — for shared hosting or when only an
+   admin login is available), registered in `inc/rest-migrate-sections.php`:
+
+   ```
+   POST /wp-json/doubletap/v1/migrate-sections
+   Body (JSON, all optional): { "post_id": 42, "dry_run": true }
+   ```
+
+   Auth is a WordPress administrator account authenticated via core
+   **Application Passwords** (Users → Profile → Application Passwords —
+   built into WordPress since 5.6, no plugin needed), sent as HTTP Basic
+   auth over HTTPS. Example:
+
+   ```bash
+   curl -X POST https://your-site.example/wp-json/doubletap/v1/migrate-sections \
+     -u "admin_username:xxxx xxxx xxxx xxxx xxxx xxxx" \
+     -H "Content-Type: application/json" \
+     -d '{"dry_run": true}'
+   ```
+
+   The response is JSON: `{ ok, total_pages, total_sections, migrated: [...], skipped: [...] }`.
+
+Either way, the migration is idempotent (it skips any page that already
+has `content_sections` rows) and additive (it never deletes the legacy
+field data), so it can be re-run safely at any time. See
 `inc/cli-migrate-sections.php` for the full layout/field mapping.
 
 ---
@@ -250,7 +280,11 @@ doubletapprotect/
 │   ├── acf-fields.php               ACF field groups (programmatic)
 │   ├── woocommerce.php              WooCommerce hooks + overrides
 │   ├── gravity-forms.php           Gravity Forms styling hooks
-│   └── cli-migrate-sections.php    WP-CLI: migrate legacy sections → content_sections
+│   ├── cli-migrate-sections.php    Shared migration logic + WP-CLI command
+│   └── rest-migrate-sections.php   REST endpoint for the same migration (no SSH needed)
+│
+├── dev/
+│   └── build_acf_group.py          Source of truth generator for content_sections' ACF JSON
 │
 └── acf-json/                         ACF local JSON sync (auto-generated)
 ```

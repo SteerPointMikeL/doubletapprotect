@@ -125,6 +125,7 @@ add_filter( 'acf/settings/load_json', function ( $paths ) {
 require_once get_template_directory() . '/inc/woocommerce.php';
 require_once get_template_directory() . '/inc/gravity-forms.php';
 require_once get_template_directory() . '/inc/cli-migrate-sections.php';
+require_once get_template_directory() . '/inc/rest-migrate-sections.php';
 
 
 // ─── Helper: Cart Count ────────────────────────────────────────────────────

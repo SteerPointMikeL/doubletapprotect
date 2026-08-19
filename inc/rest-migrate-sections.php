@@ -1,0 +1,102 @@
+<?php
+/**
+ * REST endpoint for running the content_sections migration on environments
+ * without SSH/WP-CLI access.
+ *
+ * POST /wp-json/doubletap/v1/migrate-sections
+ *   Body (JSON, all optional):
+ *     { "post_id": 123, "dry_run": true }
+ *
+ * Auth: an authenticated administrator, via WordPress core Application
+ * Passwords (Users -> Profile -> Application Passwords) sent as HTTP Basic
+ * auth over HTTPS. No plugin required — this has been a core WordPress
+ * feature since 5.6. The endpoint itself only checks capabilities; it does
+ * not implement authentication.
+ *
+ * This calls the exact same doubletap_run_sections_migration() function
+ * used by `wp doubletap migrate-sections` (see inc/cli-migrate-sections.php)
+ * — same non-destructive, idempotent behavior, just reachable over HTTPS
+ * instead of a terminal.
+ *
+ * @package doubletap
+ */
+
+defined( 'ABSPATH' ) || exit;
+
+add_action( 'rest_api_init', 'doubletap_register_migrate_sections_route' );
+
+function doubletap_register_migrate_sections_route() {
+	register_rest_route(
+		'doubletap/v1',
+		'/migrate-sections',
+		[
+			'methods'             => 'POST',
+			'callback'            => 'doubletap_handle_migrate_sections_request',
+			'permission_callback' => 'doubletap_migrate_sections_permission_check',
+			'args'                => [
+				'post_id' => [
+					'type'              => 'integer',
+					'required'          => false,
+					'default'           => 0,
+					'sanitize_callback' => 'absint',
+				],
+				'dry_run' => [
+					'type'              => 'boolean',
+					'required'          => false,
+					'default'           => false,
+				],
+			],
+		]
+	);
+}
+
+/**
+ * Only site administrators may run the migration, and only over HTTPS
+ * (Application Passwords already require HTTPS by default outside of
+ * localhost, but this is an explicit belt-and-suspenders check since the
+ * migration writes post meta).
+ */
+function doubletap_migrate_sections_permission_check( WP_REST_Request $request ) {
+	if ( ! is_ssl() && 'localhost' !== wp_parse_url( home_url(), PHP_URL_HOST ) ) {
+		return new WP_Error(
+			'doubletap_https_required',
+			'This endpoint requires HTTPS.',
+			[ 'status' => 403 ]
+		);
+	}
+
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return new WP_Error(
+			'doubletap_forbidden',
+			'You do not have permission to run this migration.',
+			[ 'status' => 403 ]
+		);
+	}
+
+	return true;
+}
+
+function doubletap_handle_migrate_sections_request( WP_REST_Request $request ) {
+	if ( ! function_exists( 'doubletap_run_sections_migration' ) ) {
+		return new WP_Error(
+			'doubletap_migration_unavailable',
+			'The migration logic is not loaded on this site.',
+			[ 'status' => 500 ]
+		);
+	}
+
+	$post_id = (int) $request->get_param( 'post_id' );
+	$dry_run = (bool) $request->get_param( 'dry_run' );
+
+	$result = doubletap_run_sections_migration( $post_id, $dry_run );
+
+	if ( ! $result['ok'] ) {
+		return new WP_Error(
+			'doubletap_migration_failed',
+			$result['error'] ?: 'The migration could not run.',
+			[ 'status' => 500 ]
+		);
+	}
+
+	return new WP_REST_Response( $result, 200 );
+}
