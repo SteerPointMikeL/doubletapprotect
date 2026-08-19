@@ -2874,6 +2874,354 @@
                     ],
                     "min": "",
                     "max": ""
+                },
+                "layout_cs_feature_columns": {
+                    "key": "layout_cs_feature_columns",
+                    "name": "feature_columns",
+                    "label": "Feature Columns",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_cs_fcol_heading",
+                            "label": "Section Heading (optional)",
+                            "name": "heading",
+                            "aria-label": "",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "allow_in_bindings": 0,
+                            "default_value": "",
+                            "maxlength": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": ""
+                        },
+                        {
+                            "key": "field_cs_fcol_bg",
+                            "label": "Background",
+                            "name": "section_background",
+                            "aria-label": "",
+                            "type": "select",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "allow_in_bindings": 0,
+                            "choices": {
+                                "bg": "Dark (--color-bg)",
+                                "surface": "Surface (--color-surface)"
+                            },
+                            "default_value": "bg",
+                            "allow_null": 0,
+                            "multiple": 0,
+                            "ui": 1,
+                            "ajax": 0,
+                            "placeholder": "",
+                            "return_format": "value"
+                        },
+                        {
+                            "key": "field_cs_fcol_columns",
+                            "label": "Columns",
+                            "name": "columns",
+                            "aria-label": "",
+                            "type": "repeater",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "allow_in_bindings": 0,
+                            "collapsed": "",
+                            "min": 1,
+                            "max": 6,
+                            "layout": "block",
+                            "button_label": "Add Column",
+                            "rows_per_page": 20,
+                            "sub_fields": [
+                                {
+                                    "key": "field_cs_fcol_image",
+                                    "label": "Image",
+                                    "name": "image",
+                                    "aria-label": "",
+                                    "type": "image",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "allow_in_bindings": 0,
+                                    "return_format": "array",
+                                    "library": "all",
+                                    "min_width": "",
+                                    "min_height": "",
+                                    "min_size": "",
+                                    "max_width": "",
+                                    "max_height": "",
+                                    "max_size": "",
+                                    "mime_types": "",
+                                    "preview_size": "medium",
+                                    "parent_repeater": "field_cs_fcol_columns"
+                                },
+                                {
+                                    "key": "field_cs_fcol_title",
+                                    "label": "Title",
+                                    "name": "title",
+                                    "aria-label": "",
+                                    "type": "text",
+                                    "instructions": "",
+                                    "required": 1,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "allow_in_bindings": 0,
+                                    "default_value": "",
+                                    "maxlength": "",
+                                    "placeholder": "",
+                                    "prepend": "",
+                                    "append": "",
+                                    "parent_repeater": "field_cs_fcol_columns"
+                                },
+                                {
+                                    "key": "field_cs_fcol_body",
+                                    "label": "Body Text",
+                                    "name": "body",
+                                    "aria-label": "",
+                                    "type": "textarea",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "allow_in_bindings": 0,
+                                    "default_value": "",
+                                    "maxlength": "",
+                                    "placeholder": "",
+                                    "rows": 3,
+                                    "new_lines": "",
+                                    "parent_repeater": "field_cs_fcol_columns"
+                                },
+                                {
+                                    "key": "field_cs_fcol_cta_text",
+                                    "label": "CTA Button Text (optional)",
+                                    "name": "cta_text",
+                                    "aria-label": "",
+                                    "type": "text",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "allow_in_bindings": 0,
+                                    "default_value": "",
+                                    "maxlength": "",
+                                    "placeholder": "",
+                                    "prepend": "",
+                                    "append": "",
+                                    "parent_repeater": "field_cs_fcol_columns"
+                                },
+                                {
+                                    "key": "field_cs_fcol_cta_url",
+                                    "label": "CTA Button URL (optional)",
+                                    "name": "cta_url",
+                                    "aria-label": "",
+                                    "type": "url",
+                                    "instructions": "",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "allow_in_bindings": 0,
+                                    "default_value": "",
+                                    "placeholder": "",
+                                    "parent_repeater": "field_cs_fcol_columns"
+                                },
+                                {
+                                    "key": "field_cs_fcol_full_link",
+                                    "label": "Make entire column clickable (optional)",
+                                    "name": "full_link",
+                                    "aria-label": "",
+                                    "type": "true_false",
+                                    "instructions": "If enabled, the whole column links to the CTA URL above (in addition to the visible button). If disabled, only the button itself is clickable.",
+                                    "required": 0,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "allow_in_bindings": 0,
+                                    "default_value": 0,
+                                    "ui": 1,
+                                    "ui_on_text": "",
+                                    "ui_off_text": "",
+                                    "message": "",
+                                    "parent_repeater": "field_cs_fcol_columns"
+                                }
+                            ]
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                "layout_cs_bullet_list": {
+                    "key": "layout_cs_bullet_list",
+                    "name": "bullet_list",
+                    "label": "Bullet List",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_cs_blist_heading",
+                            "label": "Section Heading (optional)",
+                            "name": "heading",
+                            "aria-label": "",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "allow_in_bindings": 0,
+                            "default_value": "",
+                            "maxlength": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": ""
+                        },
+                        {
+                            "key": "field_cs_blist_cols",
+                            "label": "Columns",
+                            "name": "columns",
+                            "aria-label": "",
+                            "type": "select",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "allow_in_bindings": 0,
+                            "choices": {
+                                "2": "2",
+                                "3": "3",
+                                "4": "4"
+                            },
+                            "default_value": "4",
+                            "allow_null": 0,
+                            "multiple": 0,
+                            "ui": 1,
+                            "ajax": 0,
+                            "placeholder": "",
+                            "return_format": "value"
+                        },
+                        {
+                            "key": "field_cs_blist_bg",
+                            "label": "Background",
+                            "name": "section_background",
+                            "aria-label": "",
+                            "type": "select",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "allow_in_bindings": 0,
+                            "choices": {
+                                "bg": "Dark (--color-bg)",
+                                "surface": "Surface (--color-surface)"
+                            },
+                            "default_value": "bg",
+                            "allow_null": 0,
+                            "multiple": 0,
+                            "ui": 1,
+                            "ajax": 0,
+                            "placeholder": "",
+                            "return_format": "value"
+                        },
+                        {
+                            "key": "field_cs_blist_items",
+                            "label": "Items",
+                            "name": "items",
+                            "aria-label": "",
+                            "type": "repeater",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "allow_in_bindings": 0,
+                            "collapsed": "",
+                            "min": 1,
+                            "max": 40,
+                            "layout": "block",
+                            "button_label": "Add Item",
+                            "rows_per_page": 20,
+                            "sub_fields": [
+                                {
+                                    "key": "field_cs_blist_item_text",
+                                    "label": "Text",
+                                    "name": "text",
+                                    "aria-label": "",
+                                    "type": "text",
+                                    "instructions": "",
+                                    "required": 1,
+                                    "conditional_logic": 0,
+                                    "wrapper": {
+                                        "width": "",
+                                        "class": "",
+                                        "id": ""
+                                    },
+                                    "allow_in_bindings": 0,
+                                    "default_value": "",
+                                    "maxlength": "",
+                                    "placeholder": "",
+                                    "prepend": "",
+                                    "append": "",
+                                    "parent_repeater": "field_cs_blist_items"
+                                }
+                            ]
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
                 }
             },
             "min": "",
@@ -2902,5 +3250,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1787174090
+    "modified": 1787176475
 }

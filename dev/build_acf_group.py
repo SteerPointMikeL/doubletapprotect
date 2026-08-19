@@ -352,6 +352,40 @@ add("contact_info", "Contact Info & Form", [
            instructions="Enter the numeric ID of the Gravity Form to display on this page.", minimum=1),
 ])
 
+# 19. Feature Columns ----------------------------------------------------------
+# Plain (non-card) column layout: image on top, then title, then body text,
+# then an optional CTA button -- stacked vertically, no card background or
+# absolute-positioned overlay text (unlike category_tiles, which remains
+# unchanged/untouched above for existing usages such as the Home page).
+add("feature_columns", "Feature Columns", [
+    text("field_cs_fcol_heading", "Section Heading (optional)", "heading"),
+    select("field_cs_fcol_bg", "Background", "section_background", BG_CHOICES, default="bg"),
+    repeater("field_cs_fcol_columns", "Columns", "columns", [
+        image("field_cs_fcol_image", "Image", "image"),
+        text("field_cs_fcol_title", "Title", "title", required=1),
+        textarea("field_cs_fcol_body", "Body Text", "body", rows=3),
+        text("field_cs_fcol_cta_text", "CTA Button Text (optional)", "cta_text"),
+        url("field_cs_fcol_cta_url", "CTA Button URL (optional)", "cta_url"),
+        true_false("field_cs_fcol_full_link", "Make entire column clickable (optional)", "full_link",
+                    instructions="If enabled, the whole column links to the CTA URL above (in addition to the visible button). If disabled, only the button itself is clickable."),
+    ], button_label="Add Column", minimum=1, maximum=6),
+])
+
+# 20. Bullet List ---------------------------------------------------------------
+# Lightweight, icon-free replacement for compatibility_grid when a page has
+# too many items to reasonably source/maintain icons for. Renders as a
+# plain multi-column bulleted list (no icons), matching a classic simple
+# list layout. compatibility_grid remains unchanged/untouched above for
+# existing usages (Firearms, Rifles, Scopes and Optics, Tactical Gear).
+add("bullet_list", "Bullet List", [
+    text("field_cs_blist_heading", "Section Heading (optional)", "heading"),
+    select("field_cs_blist_cols", "Columns", "columns", {"2": "2", "3": "3", "4": "4"}, default="4"),
+    select("field_cs_blist_bg", "Background", "section_background", BG_CHOICES, default="bg"),
+    repeater("field_cs_blist_items", "Items", "items", [
+        text("field_cs_blist_item_text", "Text", "text", required=1),
+    ], button_label="Add Item", minimum=1, maximum=40),
+])
+
 
 group = {
     "key": "group_universal_content_sections",
