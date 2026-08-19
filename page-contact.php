@@ -21,6 +21,15 @@ $form_id        = get_field( 'gravity_form_id' );
 
 <main id="main" class="page-contact">
 
+	<?php if ( function_exists( 'have_rows' ) && have_rows( 'content_sections' ) ) : ?>
+		<?php
+		// Optional universal sections — e.g. an extra text+image or CTA banner
+		// placed above the fixed contact layout below. Additive only; the
+		// contact form and info cards below always render regardless.
+		doubletap_render_flexible_sections( get_the_ID(), 'content_sections' );
+		?>
+	<?php endif; ?>
+
 	<section class="page-header">
 		<div class="container">
 			<h1 class="page-header__title"><?php esc_html_e( 'Contact Us', 'doubletap' ); ?></h1>

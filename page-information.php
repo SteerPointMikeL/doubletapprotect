@@ -20,17 +20,31 @@
 defined( 'ABSPATH' ) || exit;
 
 get_header();
+
+$doubletap_has_universal_sections = function_exists( 'have_rows' ) && have_rows( 'content_sections' );
+$doubletap_has_legacy_sections    = ! $doubletap_has_universal_sections && function_exists( 'have_rows' ) && have_rows( 'info_sections' );
 ?>
 
 <main id="main" class="page-information">
 
-<?php if ( have_rows( 'info_sections' ) ) : ?>
-	<?php while ( have_rows( 'info_sections' ) ) : the_row(); ?>
+<?php if ( $doubletap_has_universal_sections ) : ?>
+
+	<?php
+	// New universal, reusable ACF flexible content — preferred going forward.
+	doubletap_render_flexible_sections( get_the_ID(), 'content_sections' );
+	?>
+
+<?php elseif ( $doubletap_has_legacy_sections ) : ?>
+
+	<?php
+	// Legacy field, kept for backward compatibility with pages not yet migrated.
+	while ( have_rows( 'info_sections' ) ) : the_row(); ?>
 		<?php
 		$layout = get_row_layout();
 		get_template_part( 'template-parts/sections/info_' . $layout );
 		?>
 	<?php endwhile; ?>
+
 <?php endif; ?>
 
 </main>

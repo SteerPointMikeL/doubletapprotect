@@ -3018,3 +3018,191 @@ table.wc-block-cart-items .wc-block-cart-items__header th,
 	text-align: left;
 	vertical-align: top;
 }
+/* ============================================================
+   UNIVERSAL CONTENT SECTIONS (content_sections flexible field)
+   New generic component styles for layouts that previously only
+   existed as hardcoded, bespoke-namespaced markup on
+   template-landing.php (the old `.dt-fk__*` classes). These use
+   the site's shared design tokens so the components look
+   consistent no matter which page they're placed on.
+   ============================================================ */
+
+/* Shared helpers */
+.section-heading--center { text-align: center; }
+.hero__eyebrow {
+  font-family: var(--font-display);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--color-primary-light);
+  margin-bottom: var(--space-3);
+}
+.brand-story__inner--reverse { direction: rtl; }
+.brand-story__inner--reverse > * { direction: ltr; }
+
+/* Warning Strip */
+.warning-strip {
+  background: var(--color-surface-2);
+  border-top: 1px solid rgba(143,170,92,0.25);
+  border-bottom: 1px solid rgba(143,170,92,0.25);
+  padding-block: var(--space-4);
+}
+.warning-strip__inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-4);
+  text-align: center;
+}
+.warning-strip__title {
+  color: var(--color-primary-light);
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: var(--text-sm);
+}
+.warning-strip__text { color: var(--color-text); font-size: var(--text-sm); }
+
+/* Pairing Cards */
+.pairing-cards { padding: clamp(var(--space-12), 8vw, var(--space-20)) 0; background: var(--color-bg); }
+.pairing-cards__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-6);
+  margin-top: var(--space-8);
+}
+.pairing-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-surface-3);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  position: relative;
+}
+.pairing-card__badge {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  background: var(--color-primary);
+  color: #fff;
+  font-size: var(--text-xs);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-full);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.pairing-card__tag {
+  color: var(--color-primary-light);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: var(--space-2);
+}
+.pairing-card__title {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  color: var(--color-text);
+  margin-bottom: var(--space-2);
+}
+.pairing-card__body { color: var(--color-text-muted); font-size: var(--text-sm); margin-bottom: var(--space-3); }
+.pairing-card__bullets { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--space-1); }
+.pairing-card__bullets li {
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  padding-left: var(--space-4);
+  position: relative;
+}
+.pairing-card__bullets li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 6px;
+  height: 6px;
+  background: var(--color-primary-light);
+  border-radius: 50%;
+}
+
+/* Application Steps */
+.application-steps { padding: clamp(var(--space-12), 8vw, var(--space-20)) 0; background: var(--color-surface); }
+.application-steps__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-8);
+  margin-top: var(--space-8);
+}
+.application-step { text-align: center; }
+.application-step__num {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  color: var(--color-primary-light);
+  opacity: 0.6;
+  margin-bottom: var(--space-2);
+}
+.application-step__title {
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  color: var(--color-text);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: var(--space-2);
+}
+.application-step__body { color: var(--color-text-muted); font-size: var(--text-sm); }
+
+/* Video Showcase (single video, click-to-play) */
+.video-showcase { padding: clamp(var(--space-12), 8vw, var(--space-20)) 0; background: var(--color-bg); }
+.video-showcase__frame {
+  position: relative;
+  max-width: 960px;
+  margin: var(--space-8) auto 0;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--color-surface) center / cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.video-showcase__frame iframe { width: 100%; height: 100%; border: 0; }
+.video-showcase__play {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: rgba(13,13,13,0.7);
+  border: 2px solid var(--color-primary-light);
+  color: var(--color-primary-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+.video-showcase__play:hover { transform: scale(1.06); background: var(--color-primary); color: #fff; }
+.video-showcase__play svg { width: 32px; height: 32px; }
+
+/* Compatibility Grid */
+.compatibility-grid { padding: clamp(var(--space-12), 8vw, var(--space-20)) 0; background: var(--color-surface); }
+.compatibility-grid__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+  margin-top: var(--space-8);
+}
+@media (min-width: 640px) {
+  .compatibility-grid__grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (min-width: 960px) {
+  .compatibility-grid__grid { grid-template-columns: repeat(4, 1fr); }
+}
+.compatibility-grid__item {
+  background: var(--color-bg);
+  border: 1px solid var(--color-surface-3);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  text-align: center;
+  transition: border-color 0.2s ease;
+}
+.compatibility-grid__item:hover { border-color: var(--color-primary-light); }
+.compatibility-grid__icon { width: 40px; height: 40px; object-fit: contain; margin: 0 auto var(--space-2); display: block; }
+.compatibility-grid__label { font-size: var(--text-sm); color: var(--color-text-muted); }

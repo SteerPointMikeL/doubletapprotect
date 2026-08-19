@@ -20,6 +20,14 @@ get_header();
 
 <main id="main" class="dt-galleries">
 
+	<?php if ( function_exists( 'have_rows' ) && have_rows( 'content_sections' ) ) : ?>
+		<?php
+		// Optional universal sections — additive only; the gallery hero and
+		// shortcode content below always render regardless.
+		doubletap_render_flexible_sections( get_the_ID(), 'content_sections' );
+		?>
+	<?php endif; ?>
+
 	<?php while ( have_posts() ) : the_post(); ?>
 
 		<!-- Page hero -->

@@ -10,19 +10,9 @@ if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 get_header();
 
-// Small helper to render hero title with {accent} span
-function dtfk_render_accented_title( $raw ) {
-    $raw = (string) $raw;
-    // Replace {word} with <span class="dt-fk__accent">word</span>
-    $out = preg_replace_callback(
-        '/\{([^}]+)\}/',
-        function ( $m ) {
-            return '<span class="dt-fk__accent">' . esc_html( $m[1] ) . '</span>';
-        },
-        esc_html( $raw )
-    );
-    return $out;
-}
+// Hero title accent rendering ({word} => accented span) now lives in
+// functions.php as doubletap_render_accent_heading(), shared with the
+// universal hero.php section partial.
 
 // ACF helpers — use get_field with fallbacks so the template still works if ACF is disabled
 $hero_eyebrow      = function_exists( 'get_field' ) ? get_field( 'hero_eyebrow' )      : '';
@@ -66,6 +56,23 @@ $hero_alt = is_array( $hero_image ) && ! empty( $hero_image['alt'] ) ? $hero_ima
 $intro_src = is_array( $intro_image ) && ! empty( $intro_image['url'] ) ? $intro_image['url'] : '';
 $intro_alt = is_array( $intro_image ) && ! empty( $intro_image['alt'] ) ? $intro_image['alt'] : '';
 ?>
+<?php
+$doubletap_has_universal_sections = function_exists( 'have_rows' ) && have_rows( 'content_sections' );
+?>
+<?php if ( $doubletap_has_universal_sections ) : ?>
+
+	<main id="primary">
+		<?php
+		// New universal, reusable ACF flexible content - preferred going
+		// forward. Lets any section on this landing page (hero, warning strip,
+		// text+image, pairing cards, etc.) be added, removed, or reordered
+		// instead of being locked into this template's fixed field layout.
+		doubletap_render_flexible_sections( get_the_ID(), 'content_sections' );
+		?>
+	</main>
+
+<?php else : ?>
+
 <main class="dt-fk" id="primary">
 
     <!-- HERO -->
@@ -76,7 +83,7 @@ $intro_alt = is_array( $intro_image ) && ! empty( $intro_image['alt'] ) ? $intro
                 <div class="dt-fk__eyebrow"><?php echo esc_html( $hero_eyebrow ); ?></div>
             <?php endif; ?>
             <h1 class="dt-fk__hero-title">
-                <?php echo dtfk_render_accented_title( $hero_title ); ?>
+                <?php echo doubletap_render_accent_heading( $hero_title, 'dt-fk__accent' ); ?>
             </h1>
             <?php if ( $hero_subtitle ) : ?>
                 <p class="dt-fk__hero-sub"><?php echo esc_html( $hero_subtitle ); ?></p>
@@ -315,5 +322,7 @@ $intro_alt = is_array( $intro_image ) && ! empty( $intro_image['alt'] ) ? $intro
     });
 })();
 </script>
+
+<?php endif; ?>
 
 <?php get_footer();

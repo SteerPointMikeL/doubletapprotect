@@ -49,6 +49,78 @@ To manage the homepage sections:
 3. Click **Add Section**, choose a layout, and fill in the fields
 4. Sections can be dragged to reorder
 
+> **Note:** `page_sections` is kept for backward compatibility. New work
+> should use the universal `content_sections` field described below —
+> see [ACF Flexible Content — Universal Sections](#acf-flexible-content--universal-sections-recommended).
+
+---
+
+## ACF Flexible Content — Universal Sections (recommended)
+
+Every page (`post_type == page`, any template) now has access to a single
+**Flexible Content** field called `content_sections`
+(`acf-json/group_universal_content_sections.json`, field group key
+`group_universal_content_sections`). Unlike the older per-template fields
+below, this field is not locked to a specific page or template — any of its
+17 layouts can be added, removed, or reordered on **any** page from the
+normal WordPress editor.
+
+This replaces the need for hardcoded, page-specific markup (like the old
+fixed sections on the Firearms/Knives/Pistols/Rifles/Scopes/Tactical
+landing pages) or content locked into a single template's ACF group (like
+the old Home-only `page_sections` or Information-only `info_sections`
+fields). A shared section — for example the "Protection That Performs
+Under Pressure" text + image block on the Firearms page — is now just one
+`text_image` row that can be reused verbatim on any other page.
+
+**Available layouts:**
+
+| Layout Name | Description |
+|---|---|
+| `hero` | Full-viewport hero: eyebrow, heading (supports `{word}` accent syntax), subheading, background image, optional logo, up to 2 CTAs |
+| `page_header` | Simple title + subtitle band |
+| `warning_strip` | Compact safety/warning banner |
+| `text_image` | **Canonical** two-column text + image block (label, heading, rich text body, image, left/right position) — e.g. "Protection That Performs Under Pressure" |
+| `category_tiles` | Grid of linked image tiles |
+| `featured_products` | WooCommerce product grid (manually selected or auto-filled) |
+| `features_grid` | 3 or 4-column icon + text benefits grid |
+| `pairing_cards` | Card grid with badge, tag, title, body, and bullet list |
+| `application_steps` | Numbered step-by-step grid |
+| `application_methods` | Icon + title + text method cards |
+| `product_line` | Repeating product name/description/instructions blocks |
+| `video_showcase` | Single click-to-play video with poster frame |
+| `video_grid` | Multi-column grid of embedded or HTML5 videos with captions |
+| `compatibility_grid` | Icon + label compatibility grid |
+| `testimonials` | Testimonial grid with optional star rating |
+| `safety_information` | Safety copy + downloadable SDS file list |
+| `cta_banner` | Full-width CTA banner with up to 2 buttons |
+
+Field/sub-field names for each layout are documented as PHP docblocks at
+the top of their corresponding template part in
+`template-parts/sections/{layout_name}.php`, and are generated from
+`build_acf_group.py` (kept in the repo as the source of truth for the
+field group — re-run it and re-export from ACF if you need to add a new
+layout or field).
+
+**Non-destructive rollout:** legacy fields (`page_sections`,
+`info_sections`, `instructions_sections`, and the fixed fields on
+`template-landing.php`) are untouched and still work. Every template
+checks `content_sections` first; if it has no rows, the page automatically
+falls back to whatever legacy content already exists, so no existing page
+breaks during rollout. A WP-CLI command is included to copy legacy content
+into the new field:
+
+```bash
+wp doubletap migrate-sections            # migrate every eligible page
+wp doubletap migrate-sections --dry-run  # preview without writing
+wp doubletap migrate-sections --post_id=42  # migrate a single page
+```
+
+The migration is idempotent (it skips any page that already has
+`content_sections` rows) and additive (it never deletes the legacy field
+data), so it can be re-run safely at any time. See
+`inc/cli-migrate-sections.php` for the full layout/field mapping.
+
 ---
 
 ## Page Templates
@@ -127,13 +199,38 @@ doubletapprotect/
 │
 ├── template-parts/
 │   └── sections/
-│       ├── section_hero.php
+│       ├── hero.php                  Universal content_sections layouts (17 total,
+│       ├── page_header.php           see "ACF Flexible Content — Universal Sections"
+│       ├── warning_strip.php         above for the full list and field names)
+│       ├── text_image.php
+│       ├── category_tiles.php
+│       ├── featured_products.php
+│       ├── features_grid.php
+│       ├── pairing_cards.php
+│       ├── application_steps.php
+│       ├── application_methods.php
+│       ├── product_line.php
+│       ├── video_showcase.php
+│       ├── video_grid.php
+│       ├── compatibility_grid.php
+│       ├── testimonials.php
+│       ├── safety_information.php
+│       ├── cta_banner.php
+│       │
+│       ├── section_hero.php          Legacy (page_sections), kept for fallback
 │       ├── section_category_tiles.php
 │       ├── section_brand_story.php
 │       ├── section_featured_products.php
 │       ├── section_features.php
 │       ├── section_testimonials.php
-│       └── section_cta_banner.php
+│       ├── section_cta_banner.php
+│       ├── info_page_header.php      Legacy (info_sections), kept for fallback
+│       ├── info_brand_story.php
+│       ├── info_methods.php
+│       ├── info_product_line.php
+│       ├── info_what_it_protects.php
+│       ├── info_safety.php
+│       └── section_video_grid.php    Legacy (instructions_sections), kept for fallback
 │
 ├── woocommerce/
 │   ├── archive-product.php           Shop listing page
@@ -152,7 +249,8 @@ doubletapprotect/
 ├── inc/
 │   ├── acf-fields.php               ACF field groups (programmatic)
 │   ├── woocommerce.php              WooCommerce hooks + overrides
-│   └── gravity-forms.php           Gravity Forms styling hooks
+│   ├── gravity-forms.php           Gravity Forms styling hooks
+│   └── cli-migrate-sections.php    WP-CLI: migrate legacy sections → content_sections
 │
 └── acf-json/                         ACF local JSON sync (auto-generated)
 ```

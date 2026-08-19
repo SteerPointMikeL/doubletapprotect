@@ -124,6 +124,7 @@ add_filter( 'acf/settings/load_json', function ( $paths ) {
 // ─── Include Modules ──────────────────────────────────────────────────────
 require_once get_template_directory() . '/inc/woocommerce.php';
 require_once get_template_directory() . '/inc/gravity-forms.php';
+require_once get_template_directory() . '/inc/cli-migrate-sections.php';
 
 
 // ─── Helper: Cart Count ────────────────────────────────────────────────────
@@ -153,6 +154,30 @@ function doubletap_get_icon( string $name ): string {
 	];
 
 	return $icons[ $name ] ?? '';
+}
+
+
+// ─── Accent Heading Renderer ───────────────────────────────────────────────
+/**
+ * Wraps any {word} segment in a heading string with an accent-colored span,
+ * e.g. "Built for the {Modern} Hunter" becomes
+ * 'Built for the <span class="hero__title-accent">Modern</span> Hunter'.
+ *
+ * Centralized so any section partial (hero, page headers, etc.) can reuse
+ * the same {curly-brace} accent syntax used across ACF text fields.
+ *
+ * @param string $raw        Raw heading text, may contain {accent} segments.
+ * @param string $accent_class CSS class applied to the wrapped span.
+ * @return string Escaped HTML string safe to echo directly.
+ */
+function doubletap_render_accent_heading( string $raw, string $accent_class = 'hero__title-accent' ): string {
+	return preg_replace_callback(
+		'/\{([^}]+)\}/',
+		function ( $m ) use ( $accent_class ) {
+			return '<span class="' . esc_attr( $accent_class ) . '">' . esc_html( $m[1] ) . '</span>';
+		},
+		esc_html( $raw )
+	);
 }
 
 
