@@ -15,6 +15,9 @@
  *   heading           (text)
  *   body              (wysiwyg)
  *   image             (image)
+ *   video             (file, optional — self-hosted mp4; if set, plays
+ *                      muted/looped in the media slot in place of image,
+ *                      which then acts as a fallback/poster only)
  *   image_position    (select: right | left)
  *   cta_text / cta_url (optional)
  *   section_background (select: bg | surface)
@@ -28,13 +31,14 @@ $label    = get_sub_field( 'label' );
 $heading  = get_sub_field( 'heading' );
 $body     = get_sub_field( 'body' );
 $image    = get_sub_field( 'image' );
+$video    = get_sub_field( 'video' );
 $position = get_sub_field( 'image_position' ) ?: 'right';
 $cta_text = get_sub_field( 'cta_text' );
 $cta_url  = get_sub_field( 'cta_url' );
 $bg       = get_sub_field( 'section_background' ) ?: 'bg';
 $bg_var   = ( $bg === 'surface' ) ? 'var(--color-surface)' : 'var(--color-bg)';
 
-if ( ! $heading && ! $body && ! $image ) {
+if ( ! $heading && ! $body && ! $image && ! $video ) {
 	return;
 }
 ?>
@@ -62,16 +66,26 @@ if ( ! $heading && ! $body && ! $image ) {
 				<?php endif; ?>
 			</div>
 
-			<?php if ( $image ) : ?>
+			<?php if ( $video || $image ) : ?>
 				<div class="brand-story__media fade-in">
 					<div class="brand-story__image-wrap">
-						<img
-							src="<?php echo esc_url( $image['url'] ); ?>"
-							alt="<?php echo esc_attr( $image['alt'] ?? '' ); ?>"
-							width="<?php echo esc_attr( $image['width'] ?? 800 ); ?>"
-							height="<?php echo esc_attr( $image['height'] ?? 600 ); ?>"
-							loading="lazy"
-						>
+						<?php if ( $video ) : ?>
+							<video
+								class="brand-story__video"
+								<?php if ( $image ) : ?>poster="<?php echo esc_url( $image['url'] ); ?>"<?php endif; ?>
+								autoplay loop muted playsinline
+							>
+								<source src="<?php echo esc_url( $video['url'] ); ?>" type="<?php echo esc_attr( $video['mime_type'] ?? 'video/mp4' ); ?>">
+							</video>
+						<?php else : ?>
+							<img
+								src="<?php echo esc_url( $image['url'] ); ?>"
+								alt="<?php echo esc_attr( $image['alt'] ?? '' ); ?>"
+								width="<?php echo esc_attr( $image['width'] ?? 800 ); ?>"
+								height="<?php echo esc_attr( $image['height'] ?? 600 ); ?>"
+								loading="lazy"
+							>
+						<?php endif; ?>
 					</div>
 				</div>
 			<?php endif; ?>

@@ -164,6 +164,8 @@ add("text_image", "Text + Image", [
     text("field_cs_ti_heading", "Heading", "heading"),
     wysiwyg("field_cs_ti_body", "Body Copy", "body"),
     image("field_cs_ti_image", "Image", "image"),
+    file_field("field_cs_ti_video", "Background Video (optional)", "video",
+               instructions="Self-hosted video file (mp4). If set, this plays muted/looped in place of the Image above; Image is used as a fallback/poster when no video is set."),
     select("field_cs_ti_image_pos", "Image Position", "image_position",
            {"right": "Right", "left": "Left"}, default="right"),
     text("field_cs_ti_cta_text", "CTA Button Text (optional)", "cta_text"),
@@ -180,6 +182,8 @@ add("category_tiles", "Category Tiles", [
         text("field_cs_cat_tile_title", "Title", "tile_title", required=1),
         textarea("field_cs_cat_tile_desc", "Description", "tile_description", rows=2),
         text("field_cs_cat_tile_link", "Link", "tile_link"),
+        text("field_cs_cat_tile_cta", "CTA Button Text (optional)", "tile_cta_text",
+             instructions="If set, renders a visible button with this label linking to Link above. If blank, the whole card stays clickable with no visible button label (previous behavior)."),
     ], button_label="Add Tile", minimum=1, maximum=8),
 ])
 

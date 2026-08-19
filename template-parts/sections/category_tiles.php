@@ -6,7 +6,10 @@
  *
  * Fields:
  *   heading, subheading (text)
- *   tiles (repeater: tile_image, tile_title, tile_description, tile_link)
+ *   tiles (repeater: tile_image, tile_title, tile_description, tile_link,
+ *          tile_cta_text (optional) — renders a visible CTA button with
+ *          this label linking to tile_link; when blank, the whole card
+ *          remains clickable with no visible button, as before)
  *
  * @package doubletap
  */
@@ -37,7 +40,8 @@ if ( ! $tiles ) {
 
 		<div class="categories__grid">
 			<?php foreach ( $tiles as $tile ) :
-				$img = $tile['tile_image'] ?? null;
+				$img      = $tile['tile_image'] ?? null;
+				$cta_text = $tile['tile_cta_text'] ?? '';
 			?>
 				<a
 					href="<?php echo esc_url( $tile['tile_link'] ?? home_url( '/shop/' ) ); ?>"
@@ -62,6 +66,9 @@ if ( ! $tiles ) {
 						<?php endif; ?>
 						<?php if ( ! empty( $tile['tile_description'] ) ) : ?>
 							<p class="category-tile__desc"><?php echo esc_html( $tile['tile_description'] ); ?></p>
+						<?php endif; ?>
+						<?php if ( $cta_text ) : ?>
+							<span class="category-tile__cta btn btn--primary"><?php echo esc_html( $cta_text ); ?></span>
 						<?php endif; ?>
 					</div>
 				</a>
