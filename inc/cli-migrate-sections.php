@@ -490,13 +490,52 @@ function doubletap_migrate_landing_page( int $post_id, bool $dry_run ): int {
 }
 
 /**
+ * Migrates the Contact page's fixed "Contact Page Settings" fields
+ * (contact_phone, contact_email, contact_response_time,
+ * contact_instagram_handle, contact_instagram_url, dealer_inquiry_heading,
+ * dealer_inquiry_text, gravity_form_id) into a single universal
+ * `contact_info` content_sections row. Mirrors migrate_contact_page() in
+ * build_migrated_wxr.py. Non-destructive: the original fixed fields are
+ * left untouched.
+ *
+ * @param int  $post_id
+ * @param bool $dry_run
+ * @return int Number of rows migrated (0 or 1).
+ */
+function doubletap_migrate_contact_page( int $post_id, bool $dry_run ): int {
+	$rows = [];
+
+	$phone = get_field( 'contact_phone', $post_id );
+	if ( $phone || get_field( 'contact_email', $post_id ) ) {
+		$rows[] = [
+			'acf_fc_layout'    => 'contact_info',
+			'phone'            => $phone,
+			'email'            => get_field( 'contact_email', $post_id ),
+			'response_time'    => get_field( 'contact_response_time', $post_id ),
+			'instagram_handle' => get_field( 'contact_instagram_handle', $post_id ),
+			'instagram_url'    => get_field( 'contact_instagram_url', $post_id ),
+			'dealer_heading'   => get_field( 'dealer_inquiry_heading', $post_id ),
+			'dealer_text'      => get_field( 'dealer_inquiry_text', $post_id ),
+			'form_heading'     => 'Send A Message',
+			'gravity_form_id'  => get_field( 'gravity_form_id', $post_id ),
+		];
+	}
+
+	if ( ! empty( $rows ) && ! $dry_run ) {
+		update_field( 'content_sections', $rows, $post_id );
+	}
+
+	return count( $rows );
+}
+
+/**
  * Shared migration core, used by both the WP-CLI command and the REST
  * endpoint in inc/rest-migrate-sections.php. Migrates legacy
  * flexible-content fields (page_sections, info_sections,
- * instructions_sections) and template-landing.php's fixed fields into the
- * new universal `content_sections` field. Non-destructive: legacy data is
- * left untouched. Idempotent: pages that already have content_sections
- * rows are skipped.
+ * instructions_sections), template-landing.php's fixed fields, and
+ * page-contact.php's fixed fields into the new universal `content_sections`
+ * field. Non-destructive: legacy data is left untouched. Idempotent: pages
+ * that already have content_sections rows are skipped.
  *
  * @param int  $single_post_id Only migrate this page ID. 0 = every eligible page.
  * @param bool $dry_run        Preview without writing any changes.
@@ -566,6 +605,8 @@ function doubletap_run_sections_migration( int $single_post_id = 0, bool $dry_ru
 			$migrated_now = doubletap_migrate_flexible_field( $post_id, 'info_sections', $dry_run );
 		} elseif ( $template === 'page-instructions.php' ) {
 			$migrated_now = doubletap_migrate_flexible_field( $post_id, 'instructions_sections', $dry_run );
+		} elseif ( $template === 'page-contact.php' ) {
+			$migrated_now = doubletap_migrate_contact_page( $post_id, $dry_run );
 		} elseif ( (int) get_option( 'page_on_front' ) === $post_id || $template === 'default' || empty( $template ) ) {
 			$migrated_now = doubletap_migrate_flexible_field( $post_id, 'page_sections', $dry_run );
 		} else {

@@ -2634,6 +2634,203 @@
                     ],
                     "min": "",
                     "max": ""
+                },
+                "layout_cs_contact_info": {
+                    "key": "layout_cs_contact_info",
+                    "name": "contact_info",
+                    "label": "Contact Info & Form",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_cs_contact_phone",
+                            "label": "Phone Number",
+                            "name": "phone",
+                            "aria-label": "",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "allow_in_bindings": 0,
+                            "default_value": "317-236-7701",
+                            "maxlength": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": ""
+                        },
+                        {
+                            "key": "field_cs_contact_email",
+                            "label": "Email Address",
+                            "name": "email",
+                            "aria-label": "",
+                            "type": "email",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "allow_in_bindings": 0,
+                            "default_value": "info@doubletapprotect.com",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": ""
+                        },
+                        {
+                            "key": "field_cs_contact_response_time",
+                            "label": "Response Time",
+                            "name": "response_time",
+                            "aria-label": "",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "allow_in_bindings": 0,
+                            "default_value": "Within 1 business day",
+                            "maxlength": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": ""
+                        },
+                        {
+                            "key": "field_cs_contact_ig_handle",
+                            "label": "Instagram Handle",
+                            "name": "instagram_handle",
+                            "aria-label": "",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "allow_in_bindings": 0,
+                            "default_value": "",
+                            "maxlength": "",
+                            "placeholder": "@handle",
+                            "prepend": "",
+                            "append": ""
+                        },
+                        {
+                            "key": "field_cs_contact_ig_url",
+                            "label": "Instagram URL",
+                            "name": "instagram_url",
+                            "aria-label": "",
+                            "type": "url",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "allow_in_bindings": 0,
+                            "default_value": "",
+                            "placeholder": "https://www.instagram.com/..."
+                        },
+                        {
+                            "key": "field_cs_contact_dealer_heading",
+                            "label": "Dealer Inquiry Heading",
+                            "name": "dealer_heading",
+                            "aria-label": "",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "allow_in_bindings": 0,
+                            "default_value": "Retail & Dealer Inquiries",
+                            "maxlength": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": ""
+                        },
+                        {
+                            "key": "field_cs_contact_dealer_text",
+                            "label": "Dealer Inquiry Text",
+                            "name": "dealer_text",
+                            "aria-label": "",
+                            "type": "textarea",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "allow_in_bindings": 0,
+                            "default_value": "",
+                            "maxlength": "",
+                            "placeholder": "",
+                            "rows": 3,
+                            "new_lines": ""
+                        },
+                        {
+                            "key": "field_cs_contact_form_heading",
+                            "label": "Form Heading",
+                            "name": "form_heading",
+                            "aria-label": "",
+                            "type": "text",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "allow_in_bindings": 0,
+                            "default_value": "Send A Message",
+                            "maxlength": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": ""
+                        },
+                        {
+                            "key": "field_cs_contact_gf_id",
+                            "label": "Gravity Form ID",
+                            "name": "gravity_form_id",
+                            "aria-label": "",
+                            "type": "number",
+                            "instructions": "Enter the numeric ID of the Gravity Form to display on this page.",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "allow_in_bindings": 0,
+                            "default_value": 0,
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": "",
+                            "min": 1,
+                            "max": "",
+                            "step": 1
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
                 }
             },
             "min": "",
@@ -2662,5 +2859,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1787157235
+    "modified": 1787170993
 }

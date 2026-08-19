@@ -51,6 +51,10 @@ def url(key, label, name, default="", **kw):
     return _base(key, label, name, "url", default_value=default, placeholder=kw.pop("placeholder", ""), **kw)
 
 
+def email_field(key, label, name, default="", **kw):
+    return _base(key, label, name, "email", default_value=default, placeholder=kw.pop("placeholder", ""), prepend="", append="", **kw)
+
+
 def image(key, label, name, **kw):
     return _base(
         key, label, name, "image",
@@ -325,6 +329,23 @@ add("cta_banner", "CTA Banner", [
     url("field_cs_cta_btn1_url", "Primary Button URL (optional)", "button_url", default="/shop/"),
     text("field_cs_cta_btn2_text", "Secondary Button Text (optional)", "button2_text"),
     url("field_cs_cta_btn2_url", "Secondary Button URL (optional)", "button2_url"),
+])
+
+# 18. Contact Info & Form ------------------------------------------------------------
+# Migrated from the fixed-field "Contact Page Settings" group
+# (acf-json/group_contact_page.json), the only page-specific section that
+# had not yet been rolled into the universal content_sections builder.
+add("contact_info", "Contact Info & Form", [
+    text("field_cs_contact_phone", "Phone Number", "phone", default="317-236-7701"),
+    email_field("field_cs_contact_email", "Email Address", "email", default="info@doubletapprotect.com"),
+    text("field_cs_contact_response_time", "Response Time", "response_time", default="Within 1 business day"),
+    text("field_cs_contact_ig_handle", "Instagram Handle", "instagram_handle", placeholder="@handle"),
+    url("field_cs_contact_ig_url", "Instagram URL", "instagram_url", placeholder="https://www.instagram.com/..."),
+    text("field_cs_contact_dealer_heading", "Dealer Inquiry Heading", "dealer_heading", default="Retail & Dealer Inquiries"),
+    textarea("field_cs_contact_dealer_text", "Dealer Inquiry Text", "dealer_text", rows=3),
+    text("field_cs_contact_form_heading", "Form Heading", "form_heading", default="Send A Message"),
+    number("field_cs_contact_gf_id", "Gravity Form ID", "gravity_form_id",
+           instructions="Enter the numeric ID of the Gravity Form to display on this page.", minimum=1),
 ])
 
 

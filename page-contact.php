@@ -9,6 +9,24 @@ defined( 'ABSPATH' ) || exit;
 
 get_header();
 
+// Determine whether the new universal "Contact Info & Form" section
+// (content_sections layout: contact_info) has been configured for this
+// page. When present, doubletap_render_flexible_sections() below already
+// renders it in place, so the legacy fixed-field block is skipped to avoid
+// a duplicate. When absent (page not yet migrated), the legacy fixed
+// fields still render — non-destructive fallback, matching the pattern
+// used across the rest of the site.
+$doubletap_cs_rows                  = function_exists( 'get_field' ) ? get_field( 'content_sections' ) : false;
+$doubletap_has_contact_info_section = false;
+if ( is_array( $doubletap_cs_rows ) ) {
+	foreach ( $doubletap_cs_rows as $doubletap_cs_row ) {
+		if ( isset( $doubletap_cs_row['acf_fc_layout'] ) && 'contact_info' === $doubletap_cs_row['acf_fc_layout'] ) {
+			$doubletap_has_contact_info_section = true;
+			break;
+		}
+	}
+}
+
 $phone          = get_field( 'contact_phone' );
 $email          = get_field( 'contact_email' );
 $response_time  = get_field( 'contact_response_time' );
@@ -23,9 +41,9 @@ $form_id        = get_field( 'gravity_form_id' );
 
 	<?php if ( function_exists( 'have_rows' ) && have_rows( 'content_sections' ) ) : ?>
 		<?php
-		// Optional universal sections — e.g. an extra text+image or CTA banner
-		// placed above the fixed contact layout below. Additive only; the
-		// contact form and info cards below always render regardless.
+		// Universal flexible content — includes the new "Contact Info & Form"
+		// (contact_info) layout when configured, plus any additional sections
+		// (e.g. an extra text+image or CTA banner) placed above/below it.
 		doubletap_render_flexible_sections( get_the_ID(), 'content_sections' );
 		?>
 	<?php endif; ?>
@@ -37,6 +55,7 @@ $form_id        = get_field( 'gravity_form_id' );
 		</div>
 	</section>
 
+	<?php if ( ! $doubletap_has_contact_info_section ) : ?>
 	<section class="contact-section">
 		<div class="container">
 			<div class="contact-grid">
@@ -108,6 +127,7 @@ $form_id        = get_field( 'gravity_form_id' );
 			</div>
 		</div>
 	</section>
+	<?php endif; ?>
 
 </main>
 
