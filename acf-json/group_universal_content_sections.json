@@ -207,7 +207,7 @@
                             "label": "Primary CTA URL",
                             "name": "cta_primary_url",
                             "aria-label": "",
-                            "type": "url",
+                            "type": "text",
                             "instructions": "",
                             "required": 0,
                             "conditional_logic": 0,
@@ -218,7 +218,10 @@
                             },
                             "allow_in_bindings": 0,
                             "default_value": "",
-                            "placeholder": ""
+                            "maxlength": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": ""
                         },
                         {
                             "key": "field_cs_hero_cta2_text",
@@ -246,7 +249,7 @@
                             "label": "Secondary CTA URL",
                             "name": "cta_secondary_url",
                             "aria-label": "",
-                            "type": "url",
+                            "type": "text",
                             "instructions": "",
                             "required": 0,
                             "conditional_logic": 0,
@@ -257,7 +260,10 @@
                             },
                             "allow_in_bindings": 0,
                             "default_value": "",
-                            "placeholder": ""
+                            "maxlength": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": ""
                         }
                     ],
                     "min": "",
@@ -536,7 +542,7 @@
                             "label": "CTA Button URL (optional)",
                             "name": "cta_url",
                             "aria-label": "",
-                            "type": "url",
+                            "type": "text",
                             "instructions": "",
                             "required": 0,
                             "conditional_logic": 0,
@@ -547,7 +553,10 @@
                             },
                             "allow_in_bindings": 0,
                             "default_value": "",
-                            "placeholder": ""
+                            "maxlength": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": ""
                         },
                         {
                             "key": "field_cs_ti_bg",
@@ -2649,7 +2658,7 @@
                             "label": "Primary Button URL (optional)",
                             "name": "button_url",
                             "aria-label": "",
-                            "type": "url",
+                            "type": "text",
                             "instructions": "",
                             "required": 0,
                             "conditional_logic": 0,
@@ -2660,7 +2669,10 @@
                             },
                             "allow_in_bindings": 0,
                             "default_value": "/shop/",
-                            "placeholder": ""
+                            "maxlength": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": ""
                         },
                         {
                             "key": "field_cs_cta_btn2_text",
@@ -2688,7 +2700,7 @@
                             "label": "Secondary Button URL (optional)",
                             "name": "button2_url",
                             "aria-label": "",
-                            "type": "url",
+                            "type": "text",
                             "instructions": "",
                             "required": 0,
                             "conditional_logic": 0,
@@ -2699,7 +2711,10 @@
                             },
                             "allow_in_bindings": 0,
                             "default_value": "",
-                            "placeholder": ""
+                            "maxlength": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": ""
                         }
                     ],
                     "min": "",
@@ -3104,7 +3119,7 @@
                                     "label": "CTA Button URL (optional)",
                                     "name": "cta_url",
                                     "aria-label": "",
-                                    "type": "url",
+                                    "type": "text",
                                     "instructions": "",
                                     "required": 0,
                                     "conditional_logic": 0,
@@ -3115,7 +3130,10 @@
                                     },
                                     "allow_in_bindings": 0,
                                     "default_value": "",
+                                    "maxlength": "",
                                     "placeholder": "",
+                                    "prepend": "",
+                                    "append": "",
                                     "parent_repeater": "field_cs_fcol_columns"
                                 },
                                 {
@@ -3305,5 +3323,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1787253654
+    "modified": 1787254688
 }

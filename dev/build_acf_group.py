@@ -144,9 +144,9 @@ add("hero", "Hero", [
           instructions="Recommended: 1920\u00d71080 JPG."),
     true_false("field_cs_hero_show_logo", "Show Site Logo", "show_logo", default=0),
     text("field_cs_hero_cta1_text", "Primary CTA Text", "cta_primary_text"),
-    url("field_cs_hero_cta1_url", "Primary CTA URL", "cta_primary_url"),
+    text("field_cs_hero_cta1_url", "Primary CTA URL", "cta_primary_url"),
     text("field_cs_hero_cta2_text", "Secondary CTA Text", "cta_secondary_text"),
-    url("field_cs_hero_cta2_url", "Secondary CTA URL", "cta_secondary_url"),
+    text("field_cs_hero_cta2_url", "Secondary CTA URL", "cta_secondary_url"),
 ])
 
 # 2. Page Header ------------------------------------------------------------
@@ -172,7 +172,7 @@ add("text_image", "Text + Image", [
     select("field_cs_ti_image_pos", "Image Position", "image_position",
            {"right": "Right", "left": "Left"}, default="right"),
     text("field_cs_ti_cta_text", "CTA Button Text (optional)", "cta_text"),
-    url("field_cs_ti_cta_url", "CTA Button URL (optional)", "cta_url"),
+    text("field_cs_ti_cta_url", "CTA Button URL (optional)", "cta_url"),
     select("field_cs_ti_bg", "Background", "section_background", BG_CHOICES, default="bg"),
 ])
 
@@ -333,9 +333,9 @@ add("cta_banner", "CTA Banner", [
     text("field_cs_cta_heading", "Heading", "heading", default="Ready to Protect Your Investment?"),
     textarea("field_cs_cta_text", "Supporting Text (optional)", "text", rows=2),
     text("field_cs_cta_btn1_text", "Primary Button Text (optional)", "button_text", default="Shop Now"),
-    url("field_cs_cta_btn1_url", "Primary Button URL (optional)", "button_url", default="/shop/"),
+    text("field_cs_cta_btn1_url", "Primary Button URL (optional)", "button_url", default="/shop/"),
     text("field_cs_cta_btn2_text", "Secondary Button Text (optional)", "button2_text"),
-    url("field_cs_cta_btn2_url", "Secondary Button URL (optional)", "button2_url"),
+    text("field_cs_cta_btn2_url", "Secondary Button URL (optional)", "button2_url"),
 ])
 
 # 18. Contact Info & Form ------------------------------------------------------------
@@ -370,7 +370,7 @@ add("feature_columns", "Feature Columns", [
         text("field_cs_fcol_title", "Title", "title", required=1),
         textarea("field_cs_fcol_body", "Body Text", "body", rows=3),
         text("field_cs_fcol_cta_text", "CTA Button Text (optional)", "cta_text"),
-        url("field_cs_fcol_cta_url", "CTA Button URL (optional)", "cta_url"),
+        text("field_cs_fcol_cta_url", "CTA Button URL (optional)", "cta_url"),
         true_false("field_cs_fcol_full_link", "Make entire column clickable (optional)", "full_link",
                     instructions="If enabled, the whole column links to the CTA URL above (in addition to the visible button). If disabled, only the button itself is clickable."),
     ], button_label="Add Column", minimum=1, maximum=6),
