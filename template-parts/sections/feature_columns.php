@@ -13,6 +13,8 @@
  * Fields:
  *   heading             (text, optional)
  *   section_background  (select: bg | surface)
+ *   grid_columns        (select: 2 | 3 | 4) - columns per row on desktop,
+ *     always a single column on mobile
  *   columns (repeater: image, title, body, cta_text, cta_url, full_link)
  *     full_link (true_false, optional) — when enabled, the entire column
  *     is wrapped in a link to cta_url (in addition to the visible
@@ -23,14 +25,17 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$heading = get_sub_field( 'heading' );
-$bg      = get_sub_field( 'section_background' ) ?: 'bg';
-$columns = get_sub_field( 'columns' );
-$bg_var  = ( $bg === 'surface' ) ? 'var(--color-surface)' : 'var(--color-bg)';
+$heading      = get_sub_field( 'heading' );
+$bg           = get_sub_field( 'section_background' ) ?: 'bg';
+$grid_columns = (int) ( get_sub_field( 'grid_columns' ) ?: 3 );
+$columns      = get_sub_field( 'columns' );
+$bg_var       = ( $bg === 'surface' ) ? 'var(--color-surface)' : 'var(--color-bg)';
 
 if ( ! $columns ) {
 	return;
 }
+
+$grid_columns = in_array( $grid_columns, array( 2, 3, 4 ), true ) ? $grid_columns : 3;
 ?>
 <section class="feature-columns" style="background:<?php echo esc_attr( $bg_var ); ?>;" aria-label="<?php echo $heading ? esc_attr( $heading ) : esc_attr__( 'Feature columns', 'doubletap' ); ?>">
 	<div class="container">
@@ -39,7 +44,7 @@ if ( ! $columns ) {
 			<h2 class="section-heading section-heading--center fade-in"><?php echo esc_html( $heading ); ?></h2>
 		<?php endif; ?>
 
-		<div class="feature-columns__grid">
+		<div class="feature-columns__grid feature-columns__grid--<?php echo esc_attr( $grid_columns ); ?>col">
 			<?php foreach ( $columns as $col ) :
 				$img       = $col['image'] ?? null;
 				$title     = $col['title'] ?? '';

@@ -515,6 +515,27 @@ a:hover {
   flex-wrap: wrap;
 }
 
+/* Compact variant (hero_style = "compact") — shorter section and a
+   lighter, 2-stop overlay so the photo reads clearly, matching the
+   legacy .dt-fk__hero treatment used on inside/landing pages before
+   they were merged into this shared layout. The default (no modifier
+   class) full-bleed treatment above is unchanged and still matches
+   Home's live styling. */
+.hero--compact {
+  min-height: clamp(420px, 60vh, 620px);
+}
+.hero--compact .hero__bg img {
+  opacity: 1;
+  filter: none;
+}
+.hero--compact .hero__overlay {
+  background: linear-gradient(
+    180deg,
+    rgba(13,13,13,0.35) 0%,
+    rgba(13,13,13,0.85) 100%
+  );
+}
+
 /* ============================================================
    CATEGORY TILES
    ============================================================ */
@@ -687,15 +708,20 @@ a:hover {
 }
 .feature-columns__grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
   gap: var(--space-8);
   margin-top: var(--space-8);
 }
+.feature-columns__grid--2col { grid-template-columns: repeat(2, 1fr); }
+.feature-columns__grid--3col { grid-template-columns: repeat(3, 1fr); }
+.feature-columns__grid--4col { grid-template-columns: repeat(4, 1fr); }
 @media (max-width: 900px) {
-  .feature-columns__grid { grid-template-columns: repeat(2, 1fr); }
+  .feature-columns__grid--3col,
+  .feature-columns__grid--4col { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 600px) {
-  .feature-columns__grid { grid-template-columns: 1fr; }
+  .feature-columns__grid--2col,
+  .feature-columns__grid--3col,
+  .feature-columns__grid--4col { grid-template-columns: 1fr; }
 }
 .feature-column {
   display: flex;

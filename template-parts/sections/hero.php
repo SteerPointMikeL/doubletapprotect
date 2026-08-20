@@ -7,6 +7,12 @@
  * hero markup formerly hardcoded in template-landing.php.
  *
  * Fields:
+ *   hero_style         (select: full | compact) — "full" is the tall,
+ *     darker-overlay treatment used on Home; "compact" is the shorter,
+ *     lighter-overlay treatment matching the legacy .dt-fk__hero markup
+ *     used on inside/landing pages (Firearms, Rifles, Scopes and Optics,
+ *     Tactical Gear, Vehicles & Marine). Defaults to "full" so any row
+ *     saved before this field existed keeps its current appearance.
  *   eyebrow            (text, optional)
  *   heading            (text) — wrap a word in {curly braces} for accent color
  *   heading_accent     (text, optional) — rendered as a second accent line
@@ -21,6 +27,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
+$hero_style     = get_sub_field( 'hero_style' ) ?: 'full';
 $eyebrow        = get_sub_field( 'eyebrow' );
 $heading        = get_sub_field( 'heading' );
 $heading_accent = get_sub_field( 'heading_accent' );
@@ -37,8 +44,9 @@ if ( ! $heading && ! $bg_image ) {
 }
 
 $bg_src = ! empty( $bg_image['url'] ) ? $bg_image['url'] : '';
+$hero_class = 'hero' . ( $hero_style === 'compact' ? ' hero--compact' : '' );
 ?>
-<section class="hero" aria-label="<?php esc_attr_e( 'Hero', 'doubletap' ); ?>">
+<section class="<?php echo esc_attr( $hero_class ); ?>" aria-label="<?php esc_attr_e( 'Hero', 'doubletap' ); ?>">
 
 	<?php if ( $bg_src ) : ?>
 		<div class="hero__bg" aria-hidden="true">

@@ -24,6 +24,33 @@
                     "display": "block",
                     "sub_fields": [
                         {
+                            "key": "field_cs_hero_style",
+                            "label": "Style",
+                            "name": "hero_style",
+                            "aria-label": "",
+                            "type": "select",
+                            "instructions": "Full-Bleed fills most of the viewport with a darker overlay (used on Home). Compact is shorter with a lighter overlay so the photo reads more clearly (used on inside/landing pages).",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "allow_in_bindings": 0,
+                            "choices": {
+                                "full": "Full-Bleed (Home)",
+                                "compact": "Compact (Inside Pages)"
+                            },
+                            "default_value": "full",
+                            "allow_null": 0,
+                            "multiple": 0,
+                            "ui": 1,
+                            "ajax": 0,
+                            "placeholder": "",
+                            "return_format": "value"
+                        },
+                        {
                             "key": "field_cs_hero_eyebrow",
                             "label": "Eyebrow (optional)",
                             "name": "eyebrow",
@@ -2930,6 +2957,34 @@
                             "return_format": "value"
                         },
                         {
+                            "key": "field_cs_fcol_grid_cols",
+                            "label": "Columns Per Row",
+                            "name": "grid_columns",
+                            "aria-label": "",
+                            "type": "select",
+                            "instructions": "How many columns to display per row on desktop (always stacks to a single column on mobile).",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "allow_in_bindings": 0,
+                            "choices": {
+                                "2": "2",
+                                "3": "3",
+                                "4": "4"
+                            },
+                            "default_value": "3",
+                            "allow_null": 0,
+                            "multiple": 0,
+                            "ui": 1,
+                            "ajax": 0,
+                            "placeholder": "",
+                            "return_format": "value"
+                        },
+                        {
                             "key": "field_cs_fcol_columns",
                             "label": "Columns",
                             "name": "columns",
@@ -3250,5 +3305,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1787176475
+    "modified": 1787253654
 }

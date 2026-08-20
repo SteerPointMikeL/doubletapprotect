@@ -131,6 +131,9 @@ def add(name, label, sub_fields):
 
 # 1. Hero -----------------------------------------------------------------
 add("hero", "Hero", [
+    select("field_cs_hero_style", "Style", "hero_style",
+           {"full": "Full-Bleed (Home)", "compact": "Compact (Inside Pages)"}, default="full",
+           instructions="Full-Bleed fills most of the viewport with a darker overlay (used on Home). Compact is shorter with a lighter overlay so the photo reads more clearly (used on inside/landing pages)."),
     text("field_cs_hero_eyebrow", "Eyebrow (optional)", "eyebrow"),
     text("field_cs_hero_heading", "Heading", "heading",
          instructions="Wrap a word in curly braces, e.g. {Firearm}, to render it in the accent color."),
@@ -360,6 +363,8 @@ add("contact_info", "Contact Info & Form", [
 add("feature_columns", "Feature Columns", [
     text("field_cs_fcol_heading", "Section Heading (optional)", "heading"),
     select("field_cs_fcol_bg", "Background", "section_background", BG_CHOICES, default="bg"),
+    select("field_cs_fcol_grid_cols", "Columns Per Row", "grid_columns", {"2": "2", "3": "3", "4": "4"}, default="3",
+           instructions="How many columns to display per row on desktop (always stacks to a single column on mobile)."),
     repeater("field_cs_fcol_columns", "Columns", "columns", [
         image("field_cs_fcol_image", "Image", "image"),
         text("field_cs_fcol_title", "Title", "title", required=1),
