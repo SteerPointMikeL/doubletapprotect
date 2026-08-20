@@ -8,7 +8,7 @@
             "name": "content_sections",
             "aria-label": "",
             "type": "flexible_content",
-            "instructions": "Add, remove, and reorder content sections. Every layout here is reusable on any page \u2014 this replaces page-specific/locked section fields and hardcoded page templates.",
+            "instructions": "Add, remove, and reorder content sections. Every layout here is reusable on any page — this replaces page-specific\/locked section fields and hardcoded page templates.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -113,7 +113,7 @@
                             "name": "background_image",
                             "aria-label": "",
                             "type": "image",
-                            "instructions": "Recommended: 1920\u00d71080 JPG.",
+                            "instructions": "Recommended: 1920×1080 JPG.",
                             "required": 0,
                             "conditional_logic": 0,
                             "wrapper": {
@@ -180,18 +180,20 @@
                             "label": "Primary CTA URL",
                             "name": "cta_primary_url",
                             "aria-label": "",
-                            "type": "url",
+                            "type": "text",
                             "instructions": "",
-                            "required": 0,
+                            "required": false,
                             "conditional_logic": 0,
                             "wrapper": {
                                 "width": "",
                                 "class": "",
                                 "id": ""
                             },
-                            "allow_in_bindings": 0,
                             "default_value": "",
-                            "placeholder": ""
+                            "maxlength": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": ""
                         },
                         {
                             "key": "field_cs_hero_cta2_text",
@@ -219,18 +221,20 @@
                             "label": "Secondary CTA URL",
                             "name": "cta_secondary_url",
                             "aria-label": "",
-                            "type": "url",
+                            "type": "text",
                             "instructions": "",
-                            "required": 0,
+                            "required": false,
                             "conditional_logic": 0,
                             "wrapper": {
                                 "width": "",
                                 "class": "",
                                 "id": ""
                             },
-                            "allow_in_bindings": 0,
                             "default_value": "",
-                            "placeholder": ""
+                            "maxlength": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": ""
                         }
                     ],
                     "min": "",
@@ -441,7 +445,7 @@
                             "name": "video",
                             "aria-label": "",
                             "type": "file",
-                            "instructions": "Self-hosted video file (mp4). If set, this plays muted/looped in place of the Image above; Image is used as a fallback/poster when no video is set.",
+                            "instructions": "Self-hosted video file (mp4). If set, this plays muted\/looped in place of the Image above; Image is used as a fallback\/poster when no video is set.",
                             "required": 0,
                             "conditional_logic": 0,
                             "wrapper": {
@@ -481,7 +485,9 @@
                             "ui": 1,
                             "ajax": 0,
                             "placeholder": "",
-                            "return_format": "value"
+                            "return_format": "value",
+                            "create_options": 0,
+                            "save_options": 0
                         },
                         {
                             "key": "field_cs_ti_cta_text",
@@ -509,7 +515,7 @@
                             "label": "CTA Button URL (optional)",
                             "name": "cta_url",
                             "aria-label": "",
-                            "type": "url",
+                            "type": "text",
                             "instructions": "",
                             "required": 0,
                             "conditional_logic": 0,
@@ -518,9 +524,12 @@
                                 "class": "",
                                 "id": ""
                             },
-                            "allow_in_bindings": 0,
                             "default_value": "",
-                            "placeholder": ""
+                            "maxlength": "",
+                            "allow_in_bindings": 0,
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": ""
                         },
                         {
                             "key": "field_cs_ti_bg",
@@ -547,7 +556,9 @@
                             "ui": 1,
                             "ajax": 0,
                             "placeholder": "",
-                            "return_format": "value"
+                            "return_format": "value",
+                            "create_options": 0,
+                            "save_options": 0
                         }
                     ],
                     "min": "",
@@ -849,7 +860,7 @@
                 "layout_cs_features_grid": {
                     "key": "layout_cs_features_grid",
                     "name": "features_grid",
-                    "label": "Features / Benefits Grid",
+                    "label": "Features \/ Benefits Grid",
                     "display": "block",
                     "sub_fields": [
                         {
@@ -934,13 +945,15 @@
                                 "3": "3",
                                 "4": "4"
                             },
-                            "default_value": "3",
+                            "default_value": 3,
                             "allow_null": 0,
                             "multiple": 0,
                             "ui": 1,
                             "ajax": 0,
                             "placeholder": "",
-                            "return_format": "value"
+                            "return_format": "value",
+                            "create_options": 0,
+                            "save_options": 0
                         },
                         {
                             "key": "field_cs_feat_bg",
@@ -967,7 +980,9 @@
                             "ui": 1,
                             "ajax": 0,
                             "placeholder": "",
-                            "return_format": "value"
+                            "return_format": "value",
+                            "create_options": 0,
+                            "save_options": 0
                         },
                         {
                             "key": "field_cs_feat_items",
@@ -1217,10 +1232,11 @@
                                     "allow_in_bindings": 0,
                                     "collapsed": "",
                                     "min": 0,
-                                    "max": "",
+                                    "max": 0,
                                     "layout": "block",
                                     "button_label": "Add Bullet",
                                     "rows_per_page": 20,
+                                    "parent_repeater": "field_cs_pair_cards",
                                     "sub_fields": [
                                         {
                                             "key": "field_cs_pair_bullet_text",
@@ -1244,8 +1260,7 @@
                                             "append": "",
                                             "parent_repeater": "field_cs_pair_bullets"
                                         }
-                                    ],
-                                    "parent_repeater": "field_cs_pair_cards"
+                                    ]
                                 }
                             ]
                         }
@@ -1447,7 +1462,9 @@
                             "ui": 1,
                             "ajax": 0,
                             "placeholder": "",
-                            "return_format": "value"
+                            "return_format": "value",
+                            "create_options": 0,
+                            "save_options": 0
                         },
                         {
                             "key": "field_cs_meth_rows",
@@ -1595,7 +1612,9 @@
                             "ui": 1,
                             "ajax": 0,
                             "placeholder": "",
-                            "return_format": "value"
+                            "return_format": "value",
+                            "create_options": 0,
+                            "save_options": 0
                         },
                         {
                             "key": "field_cs_pl_products",
@@ -1614,7 +1633,7 @@
                             "allow_in_bindings": 0,
                             "collapsed": "",
                             "min": 1,
-                            "max": "",
+                            "max": 0,
                             "layout": "block",
                             "button_label": "Add Product",
                             "rows_per_page": 20,
@@ -1743,7 +1762,9 @@
                             "ui": 1,
                             "ajax": 0,
                             "placeholder": "",
-                            "return_format": "value"
+                            "return_format": "value",
+                            "create_options": 0,
+                            "save_options": 0
                         },
                         {
                             "key": "field_cs_vs_video_id",
@@ -1751,7 +1772,7 @@
                             "name": "video_id",
                             "aria-label": "",
                             "type": "text",
-                            "instructions": "The YouTube/Vimeo video ID (not the full URL).",
+                            "instructions": "The YouTube\/Vimeo video ID (not the full URL).",
                             "required": 0,
                             "conditional_logic": 0,
                             "wrapper": {
@@ -1828,7 +1849,9 @@
                             "ui": 1,
                             "ajax": 0,
                             "placeholder": "",
-                            "return_format": "value"
+                            "return_format": "value",
+                            "create_options": 0,
+                            "save_options": 0
                         },
                         {
                             "key": "field_cs_vg_label",
@@ -1914,13 +1937,15 @@
                                 "4": "4",
                                 "5": "5"
                             },
-                            "default_value": "3",
+                            "default_value": 3,
                             "allow_null": 0,
                             "multiple": 0,
                             "ui": 1,
                             "ajax": 0,
                             "placeholder": "",
-                            "return_format": "value"
+                            "return_format": "value",
+                            "create_options": 0,
+                            "save_options": 0
                         },
                         {
                             "key": "field_cs_vg_videos",
@@ -1939,7 +1964,7 @@
                             "allow_in_bindings": 0,
                             "collapsed": "",
                             "min": 1,
-                            "max": "",
+                            "max": 0,
                             "layout": "block",
                             "button_label": "Add Video",
                             "rows_per_page": 20,
@@ -1970,7 +1995,9 @@
                                     "ajax": 0,
                                     "placeholder": "",
                                     "return_format": "value",
-                                    "parent_repeater": "field_cs_vg_videos"
+                                    "parent_repeater": "field_cs_vg_videos",
+                                    "create_options": 0,
+                                    "save_options": 0
                                 },
                                 {
                                     "key": "field_cs_vg_video_embed",
@@ -1978,7 +2005,7 @@
                                     "name": "video_embed",
                                     "aria-label": "",
                                     "type": "textarea",
-                                    "instructions": "Paste the full <iframe> embed code from Vimeo/YouTube.",
+                                    "instructions": "Paste the full <iframe> embed code from Vimeo\/YouTube.",
                                     "required": 0,
                                     "conditional_logic": 0,
                                     "wrapper": {
@@ -2115,7 +2142,7 @@
                             "allow_in_bindings": 0,
                             "collapsed": "",
                             "min": 1,
-                            "max": "",
+                            "max": 0,
                             "layout": "block",
                             "button_label": "Add Item",
                             "rows_per_page": 20,
@@ -2315,7 +2342,7 @@
                                 },
                                 {
                                     "key": "field_cs_testi_role",
-                                    "label": "Role / Location (optional)",
+                                    "label": "Role \/ Location (optional)",
                                     "name": "role",
                                     "aria-label": "",
                                     "type": "text",
@@ -2414,7 +2441,9 @@
                             "ui": 1,
                             "ajax": 0,
                             "placeholder": "",
-                            "return_format": "value"
+                            "return_format": "value",
+                            "create_options": 0,
+                            "save_options": 0
                         },
                         {
                             "key": "field_cs_safety_body",
@@ -2454,7 +2483,7 @@
                             "allow_in_bindings": 0,
                             "collapsed": "",
                             "min": 0,
-                            "max": "",
+                            "max": 0,
                             "layout": "block",
                             "button_label": "Add File",
                             "rows_per_page": 20,
@@ -2622,7 +2651,7 @@
                             "label": "Primary Button URL (optional)",
                             "name": "button_url",
                             "aria-label": "",
-                            "type": "url",
+                            "type": "text",
                             "instructions": "",
                             "required": 0,
                             "conditional_logic": 0,
@@ -2631,9 +2660,12 @@
                                 "class": "",
                                 "id": ""
                             },
+                            "default_value": "",
+                            "maxlength": "",
                             "allow_in_bindings": 0,
-                            "default_value": "/shop/",
-                            "placeholder": ""
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": ""
                         },
                         {
                             "key": "field_cs_cta_btn2_text",
@@ -2661,18 +2693,20 @@
                             "label": "Secondary Button URL (optional)",
                             "name": "button2_url",
                             "aria-label": "",
-                            "type": "url",
+                            "type": "text",
                             "instructions": "",
-                            "required": 0,
+                            "required": false,
                             "conditional_logic": 0,
                             "wrapper": {
                                 "width": "",
                                 "class": "",
                                 "id": ""
                             },
-                            "allow_in_bindings": 0,
                             "default_value": "",
-                            "placeholder": ""
+                            "maxlength": "",
+                            "placeholder": "",
+                            "prepend": "",
+                            "append": ""
                         }
                     ],
                     "min": "",
@@ -2783,7 +2817,7 @@
                             },
                             "allow_in_bindings": 0,
                             "default_value": "",
-                            "placeholder": "https://www.instagram.com/..."
+                            "placeholder": "https:\/\/www.instagram.com\/..."
                         },
                         {
                             "key": "field_cs_contact_dealer_heading",
@@ -2927,7 +2961,9 @@
                             "ui": 1,
                             "ajax": 0,
                             "placeholder": "",
-                            "return_format": "value"
+                            "return_format": "value",
+                            "create_options": 0,
+                            "save_options": 0
                         },
                         {
                             "key": "field_cs_fcol_columns",
@@ -3049,18 +3085,20 @@
                                     "label": "CTA Button URL (optional)",
                                     "name": "cta_url",
                                     "aria-label": "",
-                                    "type": "url",
+                                    "type": "text",
                                     "instructions": "",
-                                    "required": 0,
+                                    "required": false,
                                     "conditional_logic": 0,
                                     "wrapper": {
                                         "width": "",
                                         "class": "",
                                         "id": ""
                                     },
-                                    "allow_in_bindings": 0,
                                     "default_value": "",
+                                    "maxlength": "",
                                     "placeholder": "",
+                                    "prepend": "",
+                                    "append": "",
                                     "parent_repeater": "field_cs_fcol_columns"
                                 },
                                 {
@@ -3138,13 +3176,15 @@
                                 "3": "3",
                                 "4": "4"
                             },
-                            "default_value": "4",
+                            "default_value": 4,
                             "allow_null": 0,
                             "multiple": 0,
                             "ui": 1,
                             "ajax": 0,
                             "placeholder": "",
-                            "return_format": "value"
+                            "return_format": "value",
+                            "create_options": 0,
+                            "save_options": 0
                         },
                         {
                             "key": "field_cs_blist_bg",
@@ -3171,7 +3211,9 @@
                             "ui": 1,
                             "ajax": 0,
                             "placeholder": "",
-                            "return_format": "value"
+                            "return_format": "value",
+                            "create_options": 0,
+                            "save_options": 0
                         },
                         {
                             "key": "field_cs_blist_items",
@@ -3250,5 +3292,5 @@
     "display_title": "",
     "allow_ai_access": false,
     "ai_description": "",
-    "modified": 1787176475
+    "modified": 1787191101
 }
