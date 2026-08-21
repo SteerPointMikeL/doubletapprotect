@@ -766,11 +766,30 @@ a:hover {
 }
 
 /* ============================================================
+   UNIVERSAL SECTION SPACING
+   Reusable padding-override utility classes, driven by the
+   --section-pad-top / --section-pad-bottom custom properties. Any
+   section's own padding rule can opt in by reading
+   `var(--section-pad-top, <its default>)` / `var(--section-pad-bottom,
+   <its default>)` instead of a hardcoded padding value (see .bullet-list
+   and .basic-content below for the pattern). Backs the spacing_top /
+   spacing_bottom ACF fields (choices: normal | tight | none) that any
+   content_sections layout can add via spacing_fields() in
+   dev/build_acf_group.py — "normal" needs no class since the section's
+   own default padding already applies.
+   ============================================================ */
+.section-pt--tight { --section-pad-top: var(--space-6); }
+.section-pt--none  { --section-pad-top: 0; }
+.section-pb--tight { --section-pad-bottom: var(--space-6); }
+.section-pb--none  { --section-pad-bottom: 0; }
+
+/* ============================================================
    BULLET LIST
    (icon-free multi-column list, alternative to compatibility-grid)
    ============================================================ */
 .bullet-list {
-  padding: clamp(var(--space-12), 8vw, var(--space-24)) 0;
+  padding-top: var(--section-pad-top, clamp(var(--space-12), 8vw, var(--space-24)));
+  padding-bottom: var(--section-pad-bottom, clamp(var(--space-12), 8vw, var(--space-24)));
 }
 .bullet-list__list {
   list-style: none;
@@ -807,6 +826,46 @@ a:hover {
   height: 6px;
   border-radius: 50%;
   background: var(--color-primary);
+}
+
+/* ============================================================
+   BASIC CONTENT
+   Single-column centered heading + WYSIWYG body, for sections that need
+   plain rich text without the two-column image/media layout of
+   Text + Image (.brand-story) — which renders lopsided when no
+   image/video is set.
+   ============================================================ */
+.basic-content {
+  padding-top: var(--section-pad-top, clamp(var(--space-12), 8vw, var(--space-24)));
+  padding-bottom: var(--section-pad-bottom, clamp(var(--space-12), 8vw, var(--space-24)));
+  text-align: center;
+}
+.basic-content__inner {
+  max-width: 720px;
+  margin-inline: auto;
+}
+.basic-content__title {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text);
+  margin-bottom: var(--space-4);
+}
+.basic-content__body {
+  color: var(--color-text-muted);
+  font-size: var(--text-base);
+  line-height: 1.7;
+}
+.basic-content__body p {
+  margin-bottom: var(--space-4);
+}
+.basic-content__body p:last-child {
+  margin-bottom: 0;
+}
+.basic-content .btn {
+  margin-top: var(--space-6);
 }
 
 /* ============================================================

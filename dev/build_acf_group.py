@@ -121,6 +121,22 @@ def layout(key, name, label, sub_fields):
 
 BG_CHOICES = {"bg": "Dark (--color-bg)", "surface": "Surface (--color-surface)"}
 
+# Reusable per-section spacing override, backed by the --section-pad-top /
+# --section-pad-bottom CSS custom properties in style.css (see the
+# .section-pt--*/.section-pb--* utility classes). "Normal" leaves the
+# layout's own default padding untouched; any layout can opt into this same
+# pattern later by adding spacing_fields(prefix) to its sub_fields and
+# refactoring its CSS padding rule to read the two custom properties.
+SPACING_CHOICES = {"normal": "Normal (default)", "tight": "Tight", "none": "None"}
+
+
+def spacing_fields(prefix):
+    return [
+        select(f"field_cs_{prefix}_pad_top", "Spacing Above", "spacing_top", SPACING_CHOICES, default="normal"),
+        select(f"field_cs_{prefix}_pad_bottom", "Spacing Below", "spacing_bottom", SPACING_CHOICES, default="normal"),
+    ]
+
+
 layouts = {}
 
 
@@ -389,6 +405,23 @@ add("bullet_list", "Bullet List", [
     repeater("field_cs_blist_items", "Items", "items", [
         text("field_cs_blist_item_text", "Text", "text", required=1),
     ], button_label="Add Item", minimum=1, maximum=40),
+    *spacing_fields("blist"),
+])
+
+# 21. Basic Content -----------------------------------------------------------
+# Single-column centered heading + WYSIWYG body. Use this instead of
+# Text + Image when a section has no image/video: Text + Image always
+# renders a two-column grid, so a heading-only (or heading+body-only) row
+# collapses to a lopsided, left-aligned single column when the media side
+# is empty. Basic Content is a plain centered block built for that case.
+add("basic_content", "Basic Content", [
+    text("field_cs_bc_label", "Label (optional eyebrow)", "label"),
+    text("field_cs_bc_heading", "Heading (optional)", "heading"),
+    wysiwyg("field_cs_bc_body", "Body Copy (optional)", "body"),
+    text("field_cs_bc_cta_text", "CTA Button Text (optional)", "cta_text"),
+    text("field_cs_bc_cta_url", "CTA Button URL (optional)", "cta_url"),
+    select("field_cs_bc_bg", "Background", "section_background", BG_CHOICES, default="bg"),
+    *spacing_fields("bc"),
 ])
 
 

@@ -14,17 +14,20 @@
  *   columns             (select: 2 | 3 | 4)
  *   section_background  (select: bg | surface)
  *   items (repeater: text)
+ *   spacing_top          (select: normal | tight | none, optional)
+ *   spacing_bottom       (select: normal | tight | none, optional)
  *
  * @package doubletap
  */
 
 defined( 'ABSPATH' ) || exit;
 
-$heading = get_sub_field( 'heading' );
-$cols    = (int) ( get_sub_field( 'columns' ) ?: 4 );
-$bg      = get_sub_field( 'section_background' ) ?: 'bg';
-$items   = get_sub_field( 'items' );
-$bg_var  = ( $bg === 'surface' ) ? 'var(--color-surface)' : 'var(--color-bg)';
+$heading   = get_sub_field( 'heading' );
+$cols      = (int) ( get_sub_field( 'columns' ) ?: 4 );
+$bg        = get_sub_field( 'section_background' ) ?: 'bg';
+$items     = get_sub_field( 'items' );
+$bg_var    = ( $bg === 'surface' ) ? 'var(--color-surface)' : 'var(--color-bg)';
+$space_cls = doubletap_section_spacing_class( get_sub_field( 'spacing_top' ), get_sub_field( 'spacing_bottom' ) );
 
 if ( ! $items ) {
 	return;
@@ -32,7 +35,7 @@ if ( ! $items ) {
 
 $cols = in_array( $cols, array( 2, 3, 4 ), true ) ? $cols : 4;
 ?>
-<section class="bullet-list" style="background:<?php echo esc_attr( $bg_var ); ?>;" aria-label="<?php echo $heading ? esc_attr( $heading ) : esc_attr__( 'List', 'doubletap' ); ?>">
+<section class="bullet-list<?php echo esc_attr( $space_cls ); ?>" style="background:<?php echo esc_attr( $bg_var ); ?>;" aria-label="<?php echo $heading ? esc_attr( $heading ) : esc_attr__( 'List', 'doubletap' ); ?>">
 	<div class="container">
 
 		<?php if ( $heading ) : ?>
