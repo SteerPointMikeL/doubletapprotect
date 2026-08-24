@@ -869,6 +869,81 @@ a:hover {
 }
 
 /* ============================================================
+   DOCUMENT DOWNLOADS
+   Grid of downloadable documents (e.g. Safety Data Sheets): icon + title
+   + link-text label, whole card clickable through to the file.
+   ============================================================ */
+.document-downloads {
+  padding-top: var(--section-pad-top, clamp(var(--space-12), 8vw, var(--space-24)));
+  padding-bottom: var(--section-pad-bottom, clamp(var(--space-12), 8vw, var(--space-24)));
+}
+.document-downloads__grid {
+  display: grid;
+  gap: var(--space-8);
+  margin-top: var(--space-8);
+}
+.document-downloads__grid--2col { grid-template-columns: repeat(2, 1fr); }
+.document-downloads__grid--3col { grid-template-columns: repeat(3, 1fr); }
+.document-downloads__grid--4col { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 900px) {
+  .document-downloads__grid--3col,
+  .document-downloads__grid--4col { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .document-downloads__grid--2col,
+  .document-downloads__grid--3col,
+  .document-downloads__grid--4col { grid-template-columns: 1fr; }
+}
+.document-downloads__card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+.document-downloads__card:hover {
+  border-color: var(--color-primary);
+  transform: translateY(-2px);
+}
+.document-downloads__icon {
+  width: 56px; height: 56px;
+  margin-bottom: var(--space-4);
+  background: var(--color-primary);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.document-downloads__icon svg {
+  width: 28px; height: 28px;
+  stroke: #fff;
+  fill: none;
+}
+.document-downloads__title {
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--color-text);
+  margin-bottom: var(--space-2);
+}
+.document-downloads__link-text {
+  color: var(--color-primary-light);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0;
+}
+
+/* ============================================================
    PRODUCT SHOWCASE
    ============================================================ */
 .products-section {

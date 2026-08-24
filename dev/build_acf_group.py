@@ -424,6 +424,24 @@ add("basic_content", "Basic Content", [
     *spacing_fields("bc"),
 ])
 
+# 22. Document Downloads -----------------------------------------------------
+# Grid of downloadable documents (e.g. Safety Data Sheets): a fixed "file
+# download" icon + title + a link-text label (defaults to "Download PDF")
+# per item, whole card clickable through to the file. Matches the
+# "documents" section on https://www.outdoorprotector.com/safety-data-sheet/.
+add("document_downloads", "Document Downloads", [
+    text("field_cs_doc_heading", "Section Heading (optional)", "heading"),
+    select("field_cs_doc_cols", "Columns Per Row", "columns", {"2": "2", "3": "3", "4": "4"}, default="3"),
+    select("field_cs_doc_bg", "Background", "section_background", BG_CHOICES, default="bg"),
+    repeater("field_cs_doc_items", "Documents", "items", [
+        text("field_cs_doc_item_title", "Title", "title", required=1),
+        file_field("field_cs_doc_item_file", "File", "file",
+                    instructions="PDF or other downloadable document.", required=1),
+        text("field_cs_doc_item_link_text", "Link Label", "link_text", default="Download PDF"),
+    ], button_label="Add Document", minimum=1, maximum=24),
+    *spacing_fields("doc"),
+])
+
 
 group = {
     "key": "group_universal_content_sections",
