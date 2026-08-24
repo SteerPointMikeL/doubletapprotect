@@ -193,6 +193,8 @@ a:hover {
   border-width: 0;
 }
 
+.anchor {position: relative;top: -15vh;}
+
 /* ============================================================
    LAYOUT
    ============================================================ */
@@ -685,6 +687,11 @@ a:hover {
   line-height: 1.7;
   margin-bottom: var(--space-6);
 }
+.brand-story__text ul,
+.brand-story__text ol {
+  margin-bottom: 1.5em;
+  padding-left: 1em;
+}
 .brand-story__text ::marker {
   color: var(--color-primary-light);
 }
@@ -838,20 +845,19 @@ a:hover {
 .basic-content {
   padding-top: var(--section-pad-top, clamp(var(--space-12), 8vw, var(--space-24)));
   padding-bottom: var(--section-pad-bottom, clamp(var(--space-12), 8vw, var(--space-24)));
-  text-align: center;
 }
 .basic-content__inner {
-  max-width: 720px;
   margin-inline: auto;
 }
 .basic-content__title {
   font-family: var(--font-display);
   font-size: var(--text-xl);
   font-weight: 700;
+  text-align: center;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: var(--color-text);
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--space-8);
 }
 .basic-content__body {
   color: var(--color-text-muted);
@@ -863,6 +869,17 @@ a:hover {
 }
 .basic-content__body p:last-child {
   margin-bottom: 0;
+}
+.basic-content__body strong {
+  color: #fff;
+}
+.basic-content__body ul,
+.basic-content__body ol {
+  margin-bottom: 1.5em;
+  padding-left: 1em;
+}
+.basic-content__body ::marker {
+  color: var(--color-primary-light);
 }
 .basic-content .btn {
   margin-top: var(--space-6);
@@ -1264,10 +1281,10 @@ ul.products li.product:hover {
    PAGE HEADER (inner pages)
    ============================================================ */
 .page-header {
-  padding: var(--space-16) 0 var(--space-8);
+  padding: var(--space-16) 0 var(--space-16);
   text-align: center;
-  background: var(--color-bg);
-  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+  border-bottom: 2px solid var(--color-primary-light);
 }
 .page-header__title {
   font-family: var(--font-display);
