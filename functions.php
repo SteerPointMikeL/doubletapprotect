@@ -124,6 +124,8 @@ add_filter( 'acf/settings/load_json', function ( $paths ) {
 // ─── Include Modules ──────────────────────────────────────────────────────
 require_once get_template_directory() . '/inc/woocommerce.php';
 require_once get_template_directory() . '/inc/gravity-forms.php';
+require_once get_template_directory() . '/inc/cli-migrate-sections.php';
+require_once get_template_directory() . '/inc/rest-migrate-sections.php';
 
 
 // ─── Helper: Cart Count ────────────────────────────────────────────────────
@@ -153,6 +155,62 @@ function doubletap_get_icon( string $name ): string {
 	];
 
 	return $icons[ $name ] ?? '';
+}
+
+
+// ─── Accent Heading Renderer ───────────────────────────────────────────────
+/**
+ * Wraps any {word} segment in a heading string with an accent-colored span,
+ * e.g. "Built for the {Modern} Hunter" becomes
+ * 'Built for the <span class="hero__title-accent">Modern</span> Hunter'.
+ *
+ * Centralized so any section partial (hero, page headers, etc.) can reuse
+ * the same {curly-brace} accent syntax used across ACF text fields.
+ *
+ * @param string $raw        Raw heading text, may contain {accent} segments.
+ * @param string $accent_class CSS class applied to the wrapped span.
+ * @return string Escaped HTML string safe to echo directly.
+ */
+function doubletap_render_accent_heading( string $raw, string $accent_class = 'hero__title-accent' ): string {
+	return preg_replace_callback(
+		'/\{([^}]+)\}/',
+		function ( $m ) use ( $accent_class ) {
+			return '<span class="' . esc_attr( $accent_class ) . '">' . esc_html( $m[1] ) . '</span>';
+		},
+		esc_html( $raw )
+	);
+}
+
+
+// ─── Universal Section Spacing Helper ─────────────────────────────────────
+/**
+ * Builds modifier class(es) for a content_sections layout's optional
+ * spacing_top / spacing_bottom fields (choices: normal | tight | none).
+ * "normal" is the layout's own default padding and adds no class. Backed
+ * by the --section-pad-top / --section-pad-bottom CSS custom properties
+ * and .section-pt--x / .section-pb--x utility classes in style.css — any
+ * layout's section wrapper can opt into this pattern the same way
+ * (add spacing_top/spacing_bottom fields + read padding via the two
+ * custom properties in CSS) without needing new spacing logic here.
+ *
+ * @param string|null $top    spacing_top field value.
+ * @param string|null $bottom spacing_bottom field value.
+ * @return string  Space-prefixed class string (may be empty).
+ */
+function doubletap_section_spacing_class( ?string $top, ?string $bottom ): string {
+	$top    = $top ?: 'normal';
+	$bottom = $bottom ?: 'normal';
+	$valid  = array( 'tight', 'none' );
+
+	$classes = array();
+	if ( in_array( $top, $valid, true ) ) {
+		$classes[] = 'section-pt--' . $top;
+	}
+	if ( in_array( $bottom, $valid, true ) ) {
+		$classes[] = 'section-pb--' . $bottom;
+	}
+
+	return $classes ? ' ' . implode( ' ', $classes ) : '';
 }
 
 

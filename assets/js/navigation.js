@@ -29,7 +29,7 @@
 
 		// Close after tapping any link on mobile
 		menu.addEventListener( 'click', function ( e ) {
-			if ( window.innerWidth > 900 ) { return; }
+			if ( window.innerWidth > 1024 ) { return; }
 			if ( e.target.tagName !== 'A' ) { return; }
 			// Don't close if it's a parent with # href (user is expanding)
 			if ( e.target.getAttribute( 'href' ) === '#' ) {
@@ -47,7 +47,7 @@
 		window.addEventListener( 'resize', function () {
 			clearTimeout( resizeTimer );
 			resizeTimer = setTimeout( function () {
-				if ( window.innerWidth > 900 ) {
+				if ( window.innerWidth > 1024 ) {
 					menu.classList.remove( 'is-open' );
 					toggle.setAttribute( 'aria-expanded', 'false' );
 				}
