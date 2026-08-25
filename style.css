@@ -255,7 +255,19 @@ a:hover {
 /* ============================================================
    HEADER / NAV
    ============================================================ */
-.header {
+/* This was previously ".header", which never matched header.php's actual
+   markup (<header class="site-header">) — a class-name mismatch that has
+   existed since the theme's initial commit. Two real-world effects: (1)
+   the header never got its sticky/blurred styling, and (2) more
+   importantly, since ".site-header" was never a positioned element, the
+   mobile dropdown menu's "position: absolute; top: 100%" (in the DT NAV
+   block below) had no nearby positioned ancestor to anchor against, so it
+   fell back to resolving "top: 100%" against the page's overall initial
+   containing block — placing the expanded mobile menu roughly a full
+   viewport-height below the header instead of directly beneath it. Fixed
+   by matching the actual markup class name, which also makes the header
+   a proper positioning context for its absolutely-positioned children. */
+.site-header {
   position: sticky;
   top: 0;
   z-index: 100;
@@ -265,7 +277,7 @@ a:hover {
   border-bottom: 1px solid var(--color-border);
   transition: box-shadow 0.3s ease;
 }
-.header--scrolled { box-shadow: var(--shadow-md); }
+.site-header--scrolled { box-shadow: var(--shadow-md); }
 
 .nav {
   display: flex;
@@ -375,21 +387,14 @@ a:hover {
   transform: translateY(-7px) rotate(-45deg);
 }
 
-@media (max-width: 768px) {
-  .nav__toggle { display: flex; }
-  .nav__links {
-    display: none;
-    position: absolute;
-    top: 100%; left: 0; right: 0;
-    flex-direction: column;
-    background: var(--color-surface);
-    border-bottom: 1px solid var(--color-border);
-    padding: var(--space-4);
-    gap: var(--space-3);
-  }
-  .nav__links.open { display: flex; }
-  .nav__links a::after { display: none; }
-}
+/* NOTE: the mobile hamburger + collapsible menu breakpoint for .nav__toggle
+   and .nav__links now lives in the single consolidated "DT NAV" block
+   below (search for that heading) so there is exactly one source of truth
+   for the responsive nav breakpoint and toggle class name. A duplicate,
+   conflicting copy of this rule used to live here (different breakpoint,
+   different toggle class "open" vs. the JS's "is-open") which is what
+   caused the mobile menu to silently fail to open — fixed by removing
+   the duplicate instead of maintaining two out-of-sync copies. */
 
 /* ============================================================
    BUTTONS
@@ -2159,7 +2164,7 @@ table.wc-block-cart-items .wc-block-cart-items__header th,
 }
 
 /* Show on hover (desktop) and on focus-within (keyboard) */
-@media (min-width: 901px) {
+@media (min-width: 1025px) {
 	.nav__links .menu-item-has-children:hover > .sub-menu,
 	.nav__links .menu-item-has-children:focus-within > .sub-menu {
 		opacity: 1;
@@ -2191,8 +2196,14 @@ table.wc-block-cart-items .wc-block-cart-items__header th,
 	}
 }
 
-/* Mobile: open menu when hamburger toggled */
-@media (max-width: 900px) {
+/* Mobile: open menu when hamburger toggled
+   Consolidated breakpoint (was previously split across two conflicting
+   rules at 768px and 900px using two different toggle class names —
+   unified here at 1024px/1025px to match navigation.js and to give the
+   desktop row's 7 items (as of Aug 2026) room to fit without wrapping. */
+@media (max-width: 1024px) {
+	.nav__toggle { display: flex; }
+	.nav__links a::after { display: none; }
 	.nav__links {
 		position: absolute;
 		top: 100%;
